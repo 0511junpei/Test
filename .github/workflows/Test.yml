@@ -8,8 +8,9 @@ jobs:
       - name: Check Out
         uses: actions/checkout@v3
       - name: Run Check Style
-        uses: 0511junpei/reviewdogTest@main
+        uses: nikitasavinov/checkstyle-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: 'github-pr-check'
+          filter-mode: 'nofilter'
           tool_name: 'test'
