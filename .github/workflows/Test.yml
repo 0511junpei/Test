@@ -1,0 +1,15 @@
+name: test
+on: pull_request
+jobs:
+  ReviewDog:
+    name: ReviewDog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v3
+      - name: Run Check Style
+        uses: 0511junpei/reviewdogTest@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: 'github-pr-check'
+          tool_name: 'test'
