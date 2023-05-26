@@ -1,0 +1,11 @@
+name: test2
+on: push
+# スケジュール起動
+# 
+jobs:
+  Test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo '${{ toJSON(github) }}'
