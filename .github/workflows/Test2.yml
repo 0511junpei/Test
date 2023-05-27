@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        test: ${{ needs.get-branches.outputs.branches }}
+        branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
     steps:
       - run: echo ${{ matrix.test }}
       
