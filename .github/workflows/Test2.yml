@@ -14,7 +14,7 @@ jobs:
     steps:
       # とりあえずリポジトリが無ければ、クローンする。あればプルする。
       # Github clientが入っていないのでこの対応。入っていたら不要になると思う。ghコマンドで取ってこれるので。
-      - name: Clone
+      #- name: Clone
         #run: git clone ${{ github.event.repository.clone_url }}
       - name: get branches
         id: branches
