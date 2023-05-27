@@ -13,7 +13,7 @@ jobs:
       - name: CheckOutToRepository
         uses: actions/checkout@v3
         with:
-          ref: echo ${github.ref}#refs/tags/
+          ref: echo ${{github.ref}}#refs/tags/
       - name: CheckOutMainRepository
         uses: actions/checkout@v3
         with:
