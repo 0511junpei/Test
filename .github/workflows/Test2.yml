@@ -12,6 +12,8 @@ jobs:
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
+      - name: CheckOutHeadRepository
+        uses: actions/checkout@v3
       - name: get branches
         id: branches
         run: |
