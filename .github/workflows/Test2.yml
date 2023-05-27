@@ -14,20 +14,11 @@ jobs:
     steps:
       # とりあえずリポジトリが無ければ、クローンする。あればプルする。
       # Github clientが入っていないのでこの対応。入っていたら不要になると思う。ghコマンドで取ってこれるので。
-      - name: Clone
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo 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
-          echo ${{ secrets.GITHUB_TOKEN }}
-          echo ${GITHUB_ACTOR}
-          git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/0511junpei/Test
       - name: get branches
-        if: ${{ success() }}
         id: branches
         run: |
           git branch
-          branches=$(echo git branch)
+          branches=$(echo '[develop/Alpha, develop/Bravo]' | jq -c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
    
   auto-merge:
