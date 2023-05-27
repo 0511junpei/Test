@@ -27,7 +27,7 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
     steps:
-      - run: echo ${{ matrix.test }}
+      - run: echo ${{ matrix.branch }}
       
         
      
