@@ -13,7 +13,7 @@ jobs:
       - name: CheckOutToRepository
         uses: actions/checkout@v3
         with:
-          ref: ${{toJSON(github.ref_name)}}
+          ref: ${{github.ref_name}}
       - name: CheckOutMainRepository
         uses: actions/checkout@v3
         with:
