@@ -17,7 +17,7 @@ jobs:
       - name: get branches
         id: branches
         run: |
-          branches=$(echo '[develop/Alpha, develop/Bravo]' | jq -c)
+          branches=$(echo '[develop/Alpha], [develop/Bravo]' | jq -c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
    
   auto-merge:
