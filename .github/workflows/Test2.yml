@@ -15,14 +15,12 @@ jobs:
       # とりあえずリポジトリが無ければ、クローンする。あればプルする。
       # Github clientが入っていないのでこの対応。入っていたら不要になると思う。ghコマンドで取ってこれるので。
       - name: Clone
-        run: cd 
-      - name: CheckOutHeadRepository
-        uses: actions/checkout@v3
+        run: git clone ${{ github.event.repository.clone_url }}
       - name: get branches
         id: branches
         run: |
           git branch
-          branches=$(echo git branch | jq - c)
+          branches=$(echo git branch)
           echo "value=${branches}" >> $GITHUB_OUTPUT
    
   auto-merge:
