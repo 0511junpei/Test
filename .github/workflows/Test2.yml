@@ -11,11 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: CheckOutToRepository
-      #  uses: actions/checkout@v3
-      #  with:
-      #    ref: ${{toJSON(github.ref_name)}}
-        run: echo '${{toJSON(github)}}'
+        uses: actions/checkout@v3
+        with:
+          ref: ${{toJSON(github.ref_name)}}
       - name: CheckOutMainRepository
         uses: actions/checkout@v3
         with:
-          refs: main
+          ref: main
