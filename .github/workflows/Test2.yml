@@ -13,7 +13,7 @@ jobs:
       - name: CheckOutToRepository
       #  uses: actions/checkout@v3
       #  with:
-      #    ref: format() #refs/tags/
+      #    ref: ${{toJSON(github.ref_name)}}
         run: echo '${{toJSON(github)}}'
       - name: CheckOutMainRepository
         uses: actions/checkout@v3
