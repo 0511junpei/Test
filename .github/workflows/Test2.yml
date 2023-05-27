@@ -18,9 +18,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo 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
+          echo ${{ secrets.GITHUB_TOKEN }}
           echo ${GITHUB_ACTOR}
-          echo ${GITHUB_TOKEN}
-          echo ${GITHUB_TOKEN}
           git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/0511junpei/Test
       - name: get branches
         if: ${{ success() }}
