@@ -15,9 +15,10 @@ jobs:
       # とりあえずリポジトリが無ければ、クローンする。あればプルする。
       # Github clientが入っていないのでこの対応。入っていたら不要になると思う。ghコマンドで取ってこれるので。
       - name: Clone
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd /home/runner/work/Test/Test
-          git clone ${{ github.event.repository.clone_url }}
+          git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/0511junpei/Test
       - name: get branches
         if: ${{ success() }}
         id: branches
