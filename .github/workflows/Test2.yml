@@ -16,10 +16,10 @@ jobs:
       # Github clientが入っていないのでこの対応。入っていたら不要になると思う。ghコマンドで取ってこれるので。
       - name: Clone
         #run: git clone ${{ github.event.repository.clone_url }}
-        run: pwd
       - name: get branches
         id: branches
         run: |
+          cd /home/runner/work/Test/Test
           git branch
           branches=$(echo git branch)
           echo "value=${branches}" >> $GITHUB_OUTPUT
