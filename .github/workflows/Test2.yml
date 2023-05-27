@@ -12,15 +12,17 @@ jobs:
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
+      # とりあえずリポジトリが無ければ、クローンする。あればプルする。
+      # Github clientが入っていないのでこの対応。入っていたら不要になると思う。ghコマンドで取ってこれるので。
       - name: Clone
-        run: pwd
+        run: cd 
       - name: CheckOutHeadRepository
         uses: actions/checkout@v3
       - name: get branches
         id: branches
         run: |
           git branch
-          branches=$(echo git branch)
+          branches=$(echo git branch | jq - c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
    
   auto-merge:
