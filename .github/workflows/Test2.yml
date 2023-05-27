@@ -19,6 +19,7 @@ jobs:
           cd /home/runner/work/Test/Test
           git clone ${{ github.event.repository.clone_url }}
       - name: get branches
+        if: ${{ success() }}
         id: branches
         run: |
           git branch
