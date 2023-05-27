@@ -1,11 +1,20 @@
-name: test2
-on: push
-# スケジュール起動
-# 
+name: branch-auto-merge
+on: 
+  pull_request:
+    types: closed
+    branches: production
+  workflow_dispatch:
+
 jobs:
-  Test:
-    name: test
+  auto-merge:
+    name: AutoMerge
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        run: echo '${{ toJSON(github) }}'
+      - name: CheckOutToRepository
+        uses: actions/checkout@v3
+        with:
+          ref: ${github.ref}
+      - name: CheckOutMainRepository
+        uses: actions/checkout@v3
+        with:
+          refs: main
