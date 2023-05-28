@@ -34,8 +34,8 @@ jobs:
       - name: CheckOutMergeRepository
         uses: actions/checkout@v3
       - run: |
-          URI = $(gh pr create -B ${{ matrix.branch }} -t 自動マージ${{ matrix.branch }})
-          echo URI
+          URI = $(gh pr create -B ${{ matrix.branch }} -t 自動マージ${{ matrix.branch }} -b "")
+          echo ${URI}
         
      
   #auto-merge:
