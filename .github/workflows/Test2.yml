@@ -7,12 +7,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  get-branches:
+  create-branch-list:
     runs-on: ubuntu-latest
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
-      - name: get branches
+      - name: create branch list
         id: branches
         run: |
           #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
@@ -20,15 +20,24 @@ jobs:
           echo "value=${branches}" >> $GITHUB_OUTPUT
    
   auto-merge-branch-unit:
-    needs: get-branches
+    needs: create-branch-list
     runs-on: ubuntu-latest
     env: 
       GH_TOKEN: ${{ github.token }}
     strategy:
       max-parallel: 1
       matrix:
-        branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
     steps:
       - name: CheckOutMainRepository
         uses: actions/checkout@v3
-      - run: gh pr create -B ${{ matrix.branch }} -t 自動マージ${{ matrix.branch }} -b ""
+      - name: Create Pull Request
+        id: create-pull-request
+        run: |
+          URI=$(gh pr create -B ${{ matrix.branch }} -t 自動マージ（main => ${{ matrix.branch }}） -b "")
+          echo "::set-output name=PULL_REQUEST_URI::$PULL_REQUEST_URI"
+      - name: Merge
+        run: 
+          gh pr merge ${{steps.create-pull-request.outputs.PULL_REQUEST_URI}} --merge
+
+       
