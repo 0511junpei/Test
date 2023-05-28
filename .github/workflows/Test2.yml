@@ -9,6 +9,8 @@ on:
 jobs:
   get-branches:
     runs-on: ubuntu-latest
+    env: 
+      GH_TOKEN: ${{ github.token }}
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
