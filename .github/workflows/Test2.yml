@@ -18,8 +18,6 @@ jobs:
           #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
           branches=$(echo '["test", "test2"]' | jq -c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
-      - name: CheckOutMainRepository
-        uses: actions/checkout@v3
    
   auto-merge-branch-unit:
     needs: get-branches
@@ -31,7 +29,6 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
     steps:
-      - run: |
-          PULL_REQUEST_URI=$(gh pr create -B ${{ matrix.branch }} -t 自動マージ${{ matrix.branch }} -b "")
-          echo "::set-output name=PULL_REQUEST_URI::$PULL_REQUEST_URI"
-        
+      - name: CheckOutMainRepository
+        uses: actions/checkout@v3
+      - run: gh pr create -B ${{ matrix.branch }} -t 自動マージ${{ matrix.branch }} -b ""
