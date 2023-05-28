@@ -31,26 +31,7 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
     steps:
-      - name: CheckOutMergeRepository
-        uses: actions/checkout@v3
       - run: |
-          PULL_REQUEST_URI = $(gh pr create -B ${{ matrix.branch }} -t 自動マージ${{ matrix.branch }} -b "")
+          PULL_REQUEST_URI=$(gh pr create -B ${{ matrix.branch }} -t 自動マージ${{ matrix.branch }} -b "")
           echo "::set-output name=PULL_REQUEST_URI::$PULL_REQUEST_URI"
-        
-     
-  #auto-merge:
-  ##  name: AutoMerge
-   # runs-on: ubuntu-latest
-   # steps:
-   #   - name: CheckOutMergeRepository
-   #     uses: actions/checkout@v3
-   #     with:
-   #       ref: ${{github.ref_name}}
-   #   - run: pwd
-      #- name: CheckOutHeadRepository
-      #  uses: actions/checkout@v3
-      #  with:
-      #    ref: main
-    #  - name: Merge
-     #   run: git merge main
         
