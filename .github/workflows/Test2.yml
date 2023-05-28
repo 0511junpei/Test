@@ -9,8 +9,6 @@ on:
 jobs:
   get-branches:
     runs-on: ubuntu-latest
-    env: 
-      GH_TOKEN: ${{ github.token }}
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
@@ -25,6 +23,8 @@ jobs:
   auto-merge:
     needs: get-branches
     runs-on: ubuntu-latest
+    env: 
+      GH_TOKEN: ${{ github.token }}
     strategy:
       matrix:
         branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
