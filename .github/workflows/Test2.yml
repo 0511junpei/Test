@@ -1,0 +1,43 @@
+name: branch-auto-merge
+on: 
+  push:
+  pull_request:
+    types: closed
+    branches: production
+  workflow_dispatch:
+
+jobs:
+  create-branch-list:
+    runs-on: ubuntu-latest
+    outputs: 
+      branches: ${{ steps.branches.outputs.value }}
+    steps:
+      - name: create branch list
+        id: branches
+        run: |
+          #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
+          branches=$(echo '["test", "test2"]' | jq -c)
+          echo "value=${branches}" >> $GITHUB_OUTPUT
+   
+  auto-merge-branch-unit:
+    needs: create-branch-list
+    runs-on: ubuntu-latest
+    env: 
+      GH_TOKEN: ${{ github.token }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
+    steps:
+      - name: CheckOutMainRepository
+        uses: actions/checkout@v3
+      - name: Create Pull Request
+        id: create-pull-request
+        run: |
+          PULL_REQUEST_URI=$(gh pr create -B ${{ matrix.branch }} -t 自動マージmain_${{ matrix.branch }} -b "")
+          echo "::set-output name=PULL_REQUEST_URI::${PULL_REQUEST_URI}"
+      - name: Merge
+        run: 
+          gh pr merge ${{steps.create-pull-request.outputs.PULL_REQUEST_URI}} --merge
+
+       
