@@ -34,7 +34,7 @@ jobs:
       - name: Create Pull Request
         id: create-pull-request
         run: |
-          URI=$(gh pr create -B ${{ matrix.branch }} -t 自動マージ（main ${{ matrix.branch }}） -b "")
+          PULL_REQUEST_URI=$(gh pr create -B ${{ matrix.branch }} -t 自動マージmain_${{ matrix.branch }} -b "")
           echo "::set-output name=PULL_REQUEST_URI::${PULL_REQUEST_URI}"
       - name: Merge
         run: 
