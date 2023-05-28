@@ -12,13 +12,13 @@ jobs:
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
-      # とりあえずリポジトリが無ければ、クローンする。あればプルする。
-      # Github clientが入っていないのでこの対応。入っていたら不要になると思う。ghコマンドで取ってこれるので。
       - name: get branches
         id: branches
         run: |
           branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
+      - name: CheckOutMainRepository
+        uses: actions/checkout@v3
    
   auto-merge:
     needs: get-branches
@@ -27,8 +27,10 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
     steps:
-      - run: echo ${{ matrix.branch }}
-      
+      - run: |
+          echo ${{ matrix.branch }}
+          #github clientを使わない場合、リポジトリクローン＋マージが必要？
+          gh issue list
         
      
   #auto-merge:
