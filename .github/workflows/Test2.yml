@@ -29,9 +29,11 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
     steps:
+      - name: CheckOutMergeRepository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.branch }}
       - run: |
-          echo ${{ matrix.branch }}
-          #github clientを使わない場合、リポジトリクローン＋マージが必要？
           gh issue list
         
      
