@@ -21,7 +21,7 @@ jobs:
       - name: CheckOutMainRepository
         uses: actions/checkout@v3
    
-  auto-merge:
+  auto-merge-branch-unit:
     needs: get-branches
     runs-on: ubuntu-latest
     env: 
@@ -36,7 +36,8 @@ jobs:
         with:
           ref: ${{ matrix.branch }}
       - run: |
-          gh issue list
+          URI = $(gh pr create -B main -t 自動マージ${{ matrix.branch }} -l 'auto-merge' -b "")
+          echo URI
         
      
   #auto-merge:
