@@ -15,7 +15,8 @@ jobs:
       - name: get branches
         id: branches
         run: |
-          branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
+          #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
+          branches=$(echo '["test", "test2"]' | jq -c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
       - name: CheckOutMainRepository
         uses: actions/checkout@v3
@@ -26,6 +27,7 @@ jobs:
     env: 
       GH_TOKEN: ${{ github.token }}
     strategy:
+      max-parallel: 1
       matrix:
         branch: ${{ fromJson(needs.get-branches.outputs.branches) }}
     steps:
