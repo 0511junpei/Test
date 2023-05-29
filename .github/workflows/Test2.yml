@@ -35,8 +35,9 @@ jobs:
         id: create-pull-request
         run: | 
           ret = $(gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b "")
-          echo $ {{ ret }}
-      #- name: Merge
+          echo ${ret}
+          echo $?
+#- name: Merge
       #  run: 
       #    gh pr merge ${{steps.create-pull-request.outputs.PULL_REQUEST_URI}} --merge
 
