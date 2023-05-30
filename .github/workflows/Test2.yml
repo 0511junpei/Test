@@ -29,13 +29,19 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
     steps:
-      - name: CheckOutMainRepository
+      - name: checkout main repository
         uses: actions/checkout@v3
-      - name: Create Pull Request
+      - name: create pull request
         id: create-pull-request
-        run: | 
-          r=`gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""`
-          #echo ${r}
+        continue-on-error: true
+        run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
+      - name: error handling
+        if: ${{ steps.create-pull-request.outcome == 'failure' }}
+        run: |
+          echo ${{ steps.create-pull-request.outcome }}
+          echo ${{ steps.create-pull-request }}
+          exit 1
+      
 #- name: Merge
       #  run: 
       #    gh pr merge ${{steps.create-pull-request.outputs.PULL_REQUEST_URI}} --merge
