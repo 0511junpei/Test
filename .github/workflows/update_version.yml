@@ -20,21 +20,17 @@ jobs:
           
           NEW_REVISION=`expr $CURRENT_REVISION + 1`
           
-          if [[ "$NEW_REVISION" =~ ^[0-9]+$ ]]; then
-              echo 'is number'
-          fi
-        
-          if [501 -eq 501]; then
-             echo 'test'
-             NEW_MINOR=`expr $CURRENT_MINOR + 1`
-             NEW_REVISION=`echo 0`
+          if ["$NEW_REVISION" -eq 501]; then
+              echo 'test'
+              NEW_MINOR=`expr $CURRENT_MINOR + 1`
+              NEW_REVISION=`echo 0`
              
-             if "$NEW_MINOR" -gt $((99))]; then
-               NEW_MAJOR=`expr $CURRENT_MAJOR + 1`
-               NEW_MINOR=`echo 0`
-             fi
+              if "$NEW_MINOR" -gt $((99))]; then
+                  NEW_MAJOR=`expr $CURRENT_MAJOR + 1`
+                  NEW_MINOR=`echo 0`
+              fi
           else
-             echo ${NEW_REVISION}
+              echo ${NEW_REVISION}
           fi
           
           
