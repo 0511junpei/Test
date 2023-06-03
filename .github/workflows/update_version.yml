@@ -23,6 +23,7 @@ jobs:
           NEW_MINOR=`echo ${CURRENT_MINOR}`
           
           NEW_REVISION=`expr $CURRENT_REVISION + 1`
+          echo $?
           if [$? -gt ${{ env.REVISION_MAX }}]; then
              echo 'test'
              NEW_MINOR=`expr $CURRENT_MINOR + 1`
