@@ -12,7 +12,7 @@ jobs:
         run: |
           # 定数定義
           MAX_MINOR=99
-          MAX_REVISION=500
+          MAX_REVISION=999
           
           # バージョン取得
           VERSION=`cat version.txt`
@@ -29,22 +29,16 @@ jobs:
           if [ "$NEW_REVISION" -gt "$MAX_REVISION" ]; then
               NEW_MINOR=`expr $CURRENT_MINOR + 1`
               NEW_REVISION=0
-              echo ${NEW_MINOR}
-              echo ${NEW_REVISION}
              
               # マイナーが最大値を超えた場合は、メジャーをカウントアップ
               if [ "$NEW_MINOR" -gt "$MAX_MINOR" ]; then
                   NEW_MAJOR=`expr $CURRENT_MAJOR + 1`
                   NEW_MINOR=0
-                  echo ${NEW_MAJOR}
-                  echo ${NEW_MINOR}
               fi
           fi
-          
-          
-          echo ${NEW_MAJOR}
-          echo ${NEW_MINOR}
-          echo ${NEW_REVISION}
 
           NEW_VERSION=`printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION`
           echo ${NEW_VERSION}
+          
+          # バージョンupdate
+          ${NEW_VERSION} > version.txt
