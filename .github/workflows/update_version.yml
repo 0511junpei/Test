@@ -19,6 +19,11 @@ jobs:
           NEW_MINOR=`echo ${CURRENT_MINOR}`
           
           NEW_REVISION=`expr $CURRENT_REVISION + 1`
+          
+          if [[ "$NEW_REVISION" =~ ^[0-9]+$ ]]; then
+              echo 'is number'
+          fi
+        
           if [501 -eq 501]; then
              echo 'test'
              NEW_MINOR=`expr $CURRENT_MINOR + 1`
