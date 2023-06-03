@@ -21,7 +21,9 @@ jobs:
           
           NEW_MAJOR=`echo ${CURRENT_MAJOR}`
           NEW_MINOR=`echo ${CURRENT_MINOR}`
-          NEW_REVISION=`expr $CURRENT_REVISION + 401`
+          
+          RESULT=`expr $CURRENT_REVISION + 1`
+          NEW_REVISION=`echo $RESULT`
           if [${NEW_REVISION} -gt ${{ env.REVISION_MAX }}]; then
              NEW_MINOR=`expr $CURRENT_MINOR + 1`
              NEW_REVISION=`echo 0`
