@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MINOR_MAX: 99
-      REVISION_MAX: 500
+      REVISION_MAX: 10
     steps:
       - name: checkout main repository
         uses: actions/checkout@v3
