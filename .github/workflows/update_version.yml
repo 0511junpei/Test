@@ -1,0 +1,15 @@
+on: 
+  push:  
+  workflow_dispatch:
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout main repository
+        uses: actions/checkout@v3
+      - name: update-version
+        run: |
+          pwd
+          tail version.txt
+          
