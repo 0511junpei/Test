@@ -18,20 +18,16 @@ jobs:
           pwd
           # 前提フォーマット：0.00.000
           VERSION=`cat version.txt`
-          MAJOR=`echo $VERSION | cut -c 1`#1個目の.
-          MINOR=`echo $VERSION | cut -c 3-4`#2個目の.
+          #1個目の.
+          MAJOR=`echo $VERSION | cut -c 1`
+          
+          #2個目の.
+          MINOR=`echo $VERSION | cut -c 3-4`
           REVISION=`echo $VERSION | cut -c 6-8`
 
-          echo ${MAJOR}
-          echo ${MINOR}
-          echo ${REVISION}
-          
-          # REVISIONがMAX値の場合は、MINに戻し、MINORをアップ
-          # MINORがMAX値の場合は、MINに戻し、MAJORをアップ
-          # MAJOR、
           echo $((REVISION + 1)) 
           echo $?
-          if [$? -gt ${{ env.REVESION_MAX }}]; then
+          if [$? -gt ${{ env.REVISION_MAX }}]; then
              MINOR=`echo $((MINOR + 1))`
              REVISION=`echo ${{ env.REVISION_MIN }}`
              
