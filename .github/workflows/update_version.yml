@@ -32,5 +32,8 @@ jobs:
              fi
           fi
           
-          NEW_VERSION=`printf "%d.%02d%03d" $NEW_MAJOR $$NEW_MINOR $NEW_REVISION`
-          echo ${NEW_VERSION}
+          #NEW_VERSION=`printf "%d.%02d.%03d" $NEW_MAJOR $$NEW_MINOR $NEW_REVISION`
+          #echo ${NEW_VERSION}
+          echo ${NEW_MAJOR}
+          echo ${NEW_MINOR}
+          echo ${NEW_REVISION}
