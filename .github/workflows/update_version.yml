@@ -13,7 +13,6 @@ jobs:
         uses: actions/checkout@v3
       - name: update-version
         run: |
-          pwd
           VERSION=`cat version.txt`
           CURRENT_MAJOR=`echo $VERSION | cut -c 1`
           CURRENT_MINOR=`echo $VERSION | cut -c 3-4`
@@ -32,7 +31,10 @@ jobs:
                NEW_MAJOR=`expr $CURRENT_MAJOR + 1`
                NEW_MINOR=`echo 0`
              fi
+          else
+             echo ${NEW_REVISION}
           fi
+          
           
           #NEW_VERSION=`printf "%d.%02d.%03d" $NEW_MAJOR $$NEW_MINOR $NEW_REVISION`
           #echo ${NEW_VERSION}
