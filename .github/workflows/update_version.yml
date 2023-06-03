@@ -38,7 +38,7 @@ jobs:
           fi
 
           NEW_VERSION=`printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION`
-          echo ${NEW_VERSION}
           
           # バージョンupdate
           echo ${NEW_VERSION} > version.txt
+          cat version.txt
