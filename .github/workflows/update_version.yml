@@ -20,7 +20,7 @@ jobs:
           
           NEW_REVISION=`expr $CURRENT_REVISION + 1`
           
-          if [["$NEW_REVISION" -eq 501]]; then
+          if [["$NEW_REVISION" == 501]]; then
             echo ${NEW_REVISION}
             NEW_MINOR=`expr $CURRENT_MINOR + 1`
             NEW_REVISION=`echo 0`
