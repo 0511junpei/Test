@@ -11,9 +11,9 @@ jobs:
       - name: update-version
         run: |
           VERSION=`cat version.txt`
-          CURRENT_MAJOR=`echo $VERSION | cut -c 1`
-          CURRENT_MINOR=`echo $VERSION | cut -c 3-4`
-          CURRENT_REVISION=`echo $VERSION | cut -c 6-8`
+          CURRENT_MAJOR=`echo $VERSION | cut -d "." -f 1`
+          CURRENT_MINOR=`echo $VERSION | cut -d "." -f 2`
+          CURRENT_REVISION=`echo $VERSION | cut -d "." -f 3`
           
           NEW_MAJOR=`echo ${CURRENT_MAJOR}`
           NEW_MINOR=`echo ${CURRENT_MINOR}`
