@@ -20,8 +20,8 @@ jobs:
           
           NEW_REVISION=`expr $CURRENT_REVISION + 1`
           
-          #if [[501 = 501]]; then
-          #  echo ${NEW_REVISION}
+          if [ 501 = 501 ]; then
+              echo ${NEW_REVISION}
           #  NEW_MINOR=`expr $CURRENT_MINOR + 1`
           #  NEW_REVISION=`echo 0`
              
@@ -31,7 +31,7 @@ jobs:
             #fi
           #else
           #  echo ${NEW_REVISION}
-          #fi
+          fi
           
           
           #NEW_VERSION=`printf "%d.%02d.%03d" $NEW_MAJOR $$NEW_MINOR $NEW_REVISION`
