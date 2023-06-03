@@ -8,7 +8,7 @@ jobs:
     env:
       MINOR_MAX: 99
       MINOR_MIN: 00
-      REVISION_MAX: 999
+      REVISION_MAX: 100
       REVISION_MIN: 000
     steps:
       - name: checkout main repository
@@ -28,6 +28,7 @@ jobs:
           echo $((REVISION + 1)) 
           echo $?
           if [$? -gt ${{ env.REVISION_MAX }}]; then
+             echo $?
              MINOR=`echo $((MINOR + 1))`
              REVISION=`echo ${{ env.REVISION_MIN }}`
              
