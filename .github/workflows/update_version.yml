@@ -16,12 +16,8 @@ jobs:
       - name: update-version
         run: |
           pwd
-          # 前提フォーマット：0.00.000
           VERSION=`cat version.txt`
-          #1個目の.
           MAJOR=`echo $VERSION | cut -c 1`
-          
-          #2個目の.
           MINOR=`echo $VERSION | cut -c 3-4`
           REVISION=`echo $VERSION | cut -c 6-8`
 
