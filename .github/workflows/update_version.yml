@@ -11,8 +11,8 @@ jobs:
       - name: update-version
         run: |
           # 定数定義
-          MAX_MINOR=99
-          MAX_REVISION=500
+          MAX_MINOR=0
+          MAX_REVISION=999
           
           # バージョン取得
           VERSION=`cat version.txt`
@@ -20,22 +20,25 @@ jobs:
           CURRENT_MINOR=`echo $VERSION | cut -d "." -f 2`
           CURRENT_REVISION=`echo $VERSION | cut -d "." -f 3`
 
-          # バージョン算出処理（基本、リビジョン+1で済む）
+          # バージョンカウントアップ（基本、リビジョン+1で済む）
           NEW_MAJOR=`echo ${CURRENT_MAJOR}`
           NEW_MINOR=`echo ${CURRENT_MINOR}`          
           NEW_REVISION=`expr $CURRENT_REVISION + 1`
           
+          # リビジョンが最大値を超えた場合は、マイナーをカウントアップ
           if [ "$NEW_REVISION" -gt "$MAX_REVISION" ]; then
+              NEW_MINOR=`expr $CURRENT_MINOR + 1`
+              NEW_REVISION=0
+              echo ${NEW_MINOR}
               echo ${NEW_REVISION}
-          #  NEW_MINOR=`expr $CURRENT_MINOR + 1`
-          #  NEW_REVISION=0
              
-            #if [["$NEW_MINOR" -gt 99]]; then
-            #  NEW_MAJOR=`expr $CURRENT_MAJOR + 1`
-            #  NEW_MINOR=`echo 0`
-            #fi
-          #else
-          #  echo ${NEW_REVISION}
+              # マイナーが最大値を超えた場合は、メジャーをカウントアップ
+              if [ "$NEW_MINOR" -gt "$MAX_MINOR" ]; then
+                  NEW_MAJOR=`expr $CURRENT_MAJOR + 1`
+                  NEW_MINOR=0
+                  echo ${NEW_MAJOR}
+                  echo ${NEW_MINOR}
+              fi
           fi
           
           
