@@ -31,6 +31,10 @@ jobs:
                MINOR=`echo ${{ env.MINOR_MIN }}`
              fi
           fi
-          #echo ${MAJOR}
-          #echo ${MINOR}
-          #echo ${REVISION}
+          
+          MINOR=`printf "%02d" $MINOR`
+          REVISION=`printf "%03d" $REVISION`
+          echo ${MAJOR}
+          echo ${MINOR}
+          echo ${REVISION}
+          cat
