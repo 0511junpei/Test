@@ -11,7 +11,7 @@ jobs:
       - name: update-version
         run: |
           # 定数定義
-          MAX_MINOR=0
+          MAX_MINOR=99
           MAX_REVISION=500
           
           # バージョン取得
