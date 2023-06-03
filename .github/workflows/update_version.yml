@@ -12,10 +12,10 @@ jobs:
         run: |
           pwd
           # 前提フォーマット：0.00.000
-          version = `cat version.txt`
-          major = `$version | cut -c 1`
-          minor = `$version | cut -c 3-5`
-          revision = `$version | cut -c 6-8`
-          echo major
-          echo minor
-          echo revision
+          VERSION=`cat version.txt`
+          MAJOR=`$VERSION | cut -c 1`
+          MINOR=`$VERSION | cut -c 3-5`
+          REVISION=`$VERSION | cut -c 6-8`
+          echo MAJOR
+          echo MINOR
+          echo REVISION
