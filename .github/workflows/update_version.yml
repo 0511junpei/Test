@@ -14,8 +14,14 @@ jobs:
           # 前提フォーマット：0.00.000
           VERSION=`cat version.txt`
           MAJOR=`echo $VERSION | cut -c 1`
-          MINOR=`echo $VERSION | cut -c 3-5`
+          MINOR=`echo $VERSION | cut -c 3-4`
           REVISION=`echo $VERSION | cut -c 6-8`
+
           echo ${MAJOR}
           echo ${MINOR}
           echo ${REVISION}
+          
+          # REVISIONがMAX値の場合は、MINに戻し、MINORをアップ
+          # MINORがMAX値の場合は、MINに戻し、MAJORをアップ
+          # MAJOR、MINOR、REVISIJONがMAXの場合は、カウントアップできないエラー
+          $(`echo $VERSION | cut -c 6-8`)
