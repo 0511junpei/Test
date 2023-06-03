@@ -41,4 +41,4 @@ jobs:
           echo ${NEW_VERSION}
           
           # バージョンupdate
-          ${NEW_VERSION} > version.txt
+          echo ${NEW_VERSION} > version.txt
