@@ -6,10 +6,8 @@ jobs:
   update-version:
     runs-on: ubuntu-latest
     env:
-      MINOR_MAX: 00
-      MINOR_MIN: 00
+      MINOR_MAX: 99
       REVISION_MAX: 100
-      REVISION_MIN: 000
     steps:
       - name: checkout main repository
         uses: actions/checkout@v3
@@ -22,6 +20,7 @@ jobs:
           REVISION=`echo $VERSION | cut -c 6-8`
 
           TARGET=`echo $((REVISION + 1))`
+          echo ${TARGET}
           if [${TARGET} -gt ${{ env.REVISION_MAX }}]; then
              MINOR=`echo $((MINOR + 1))`
              REVISION=`echo ${{ env.REVISION_MIN }}`
@@ -32,6 +31,6 @@ jobs:
                MINOR=`echo ${{ env.MINOR_MIN }}`
              fi
           fi
-          echo ${MAJOR}
-          echo ${MINOR}
-          echo ${REVISION}
+          #echo ${MAJOR}
+          #echo ${MINOR}
+          #echo ${REVISION}
