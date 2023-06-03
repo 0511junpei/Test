@@ -15,26 +15,22 @@ jobs:
         run: |
           pwd
           VERSION=`cat version.txt`
-          MAJOR=`echo $VERSION | cut -c 1`
-          MINOR=`echo $VERSION | cut -c 3-4`
-          REVISION=`echo $VERSION | cut -c 6-8`
-
-          TARGET=`echo $((REVISION + 1))`
-          echo ${TARGET}
-          if [${TARGET} -gt ${{ env.REVISION_MAX }}]; then
-             MINOR=`echo $((MINOR + 1))`
-             REVISION=`echo ${{ env.REVISION_MIN }}`
+          CURRENT_MAJOR=`echo $VERSION | cut -c 1`
+          CURRENT_MINOR=`echo $VERSION | cut -c 3-4`
+          CURRENT_REVISION=`echo $VERSION | cut -c 6-8`
+          
+          NEW_MAJOR=`echo ${CURRENT_MAJOR}`
+          NEW_MINOR=`echo ${CURRENT_MINOR}`
+          NEW_REVISION=`echo $((CURRENT_REVISION + 1))`
+          if [${NEW_REVISION} -gt ${{ env.REVISION_MAX }}]; then
+             NEW_MINOR=`echo $((CURRENT_MINOR + 1))`
+             NEW_REVISION=`echo 0`
              
-             TARGET=`echo $((MINOR + 1))`
-             if [${TARGET} -gt ${{ env.MINOR_MAX }}]; then
-               MAJOR=`echo $((MAJOR + 1))`
-               MINOR=`echo ${{ env.MINOR_MIN }}`
+             if [${NEW_MINOR} -gt ${{ env.MINOR_MAX }}]; then
+               NEW_MAJOR=`echo $((CURRENT_MAJOR + 1))`
+               NEW_MINOR=`echo 0`
              fi
           fi
           
-          MINOR=`printf "%02d" $MINOR`
-          REVISION=`printf "%03d" $REVISION`
-          echo ${MAJOR}
-          echo ${MINOR}
-          echo ${REVISION}
-          cat
+          NEW_VERSION=`printf "%d.%02d%03d" $NEW_MAJOR $$NEW_MINOR $NEW_REVISION`
+          echo ${NEW_VERSION}
