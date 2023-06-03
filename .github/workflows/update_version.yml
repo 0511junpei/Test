@@ -5,6 +5,11 @@ on:
 jobs:
   update-version:
     runs-on: ubuntu-latest
+    env:
+      MINOR_MAX: 99
+      MINOR_MIN: 00
+      REVISION_MAX: 999
+      REVISION_MIN: 000
     steps:
       - name: checkout main repository
         uses: actions/checkout@v3
@@ -13,8 +18,8 @@ jobs:
           pwd
           # 前提フォーマット：0.00.000
           VERSION=`cat version.txt`
-          MAJOR=`echo $VERSION | cut -c 1`
-          MINOR=`echo $VERSION | cut -c 3-4`
+          MAJOR=`echo $VERSION | cut -c 1`#1個目の.
+          MINOR=`echo $VERSION | cut -c 3-4`#2個目の.
           REVISION=`echo $VERSION | cut -c 6-8`
 
           echo ${MAJOR}
@@ -23,5 +28,16 @@ jobs:
           
           # REVISIONがMAX値の場合は、MINに戻し、MINORをアップ
           # MINORがMAX値の場合は、MINに戻し、MAJORをアップ
-          # MAJOR、MINOR、REVISIJONがMAXの場合は、カウントアップできないエラー
-          $(`echo $VERSION | cut -c 6-8`)
+          # MAJOR、
+          echo $((REVISION + 1)) 
+          echo $?
+          if [$? -gt ${{ env.REVESION_MAX }}]; then
+             MINOR=`echo $((MINOR + 1))`
+             REVISION=`echo ${{ env.REVISION_MIN }}`
+             
+             echo ${MINOR}
+             if [$? -gt ${{ env.MINOR_MAX }}]; then
+               MAJOR=`echo $((MAJOR + 1))`
+               MINOR=`echo ${{ env.MINOR_MIN }}`
+             fi
+          fi
