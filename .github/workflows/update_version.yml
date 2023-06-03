@@ -6,7 +6,7 @@ jobs:
   update-version:
     runs-on: ubuntu-latest
     env:
-      MINOR_MAX: 99
+      MINOR_MAX: 00
       MINOR_MIN: 00
       REVISION_MAX: 100
       REVISION_MIN: 000
@@ -25,16 +25,17 @@ jobs:
           MINOR=`echo $VERSION | cut -c 3-4`
           REVISION=`echo $VERSION | cut -c 6-8`
 
-          echo $((REVISION + 1)) 
-          echo $?
-          if [$? -gt ${{ env.REVISION_MAX }}]; then
-             echo $?
+          TARGET=`echo $((REVISION + 1))`
+          if [${TARGET} -gt ${{ env.REVISION_MAX }}]; then
              MINOR=`echo $((MINOR + 1))`
              REVISION=`echo ${{ env.REVISION_MIN }}`
              
-             echo ${MINOR}
-             if [$? -gt ${{ env.MINOR_MAX }}]; then
+             TARGET=`echo $((MINOR + 1))`
+             if [${TARGET} -gt ${{ env.MINOR_MAX }}]; then
                MAJOR=`echo $((MAJOR + 1))`
                MINOR=`echo ${{ env.MINOR_MIN }}`
              fi
           fi
+          echo ${MAJOR}
+          echo ${MINOR}
+          echo ${REVISION}
