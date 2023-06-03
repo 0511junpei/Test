@@ -24,7 +24,7 @@ jobs:
              NEW_MINOR=`expr $CURRENT_MINOR + 1`
              NEW_REVISION=`echo 0`
              
-             if ["$NEW_MINOR" -gt $((99)]; then
+             if ["$NEW_MINOR" -gt $((99))]; then
                NEW_MAJOR=`expr $CURRENT_MAJOR + 1`
                NEW_MINOR=`echo 0`
              fi
