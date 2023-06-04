@@ -45,7 +45,9 @@ jobs:
 
           # バージョンupdate
           printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION > version.txt
-          cat version.txt
+      - name: push work branch
+        run: |
+          git commit -m "version更新"
           git push origin sandbox/action-work
 
           # gh CLIが導入されていること前提
