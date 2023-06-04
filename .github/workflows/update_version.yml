@@ -40,3 +40,6 @@ jobs:
           # バージョンupdate
           printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION > version.txt
           cat version.txt
+          
+          # gh CLIが導入されていること前提
+          gh pr create -B "main" -t "Increment Version" -b ""
