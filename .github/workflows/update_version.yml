@@ -5,6 +5,8 @@ on:
 jobs:
   update-version:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: checkout main repository
         uses: actions/checkout@v3
