@@ -1,0 +1,19 @@
+on: 
+  push:
+  pull_request:
+      types: closed
+      #branches: production
+  workflow_dispatch:  workflow_dispatch:
+
+jobs:
+  create-release-note:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: checkout work branch
+        uses: actions/checkout@v3
+      - name: create release note
+        run: |
+          VERSION=`cat version.txt`
+          gh release create ${VERSION}
