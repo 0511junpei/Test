@@ -47,9 +47,9 @@ jobs:
           printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION > version.txt
       - name: push work branch
         run: |
-          git commit -m "version更新"
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
+          git commit -m "version更新"
 
           git push origin sandbox/action-work
 
