@@ -1,9 +1,9 @@
 on: 
   push:
   pull_request:
-      types: closed
-      #branches: production
-  workflow_dispatch:  workflow_dispatch:
+    types: closed
+    #branches: production
+  workflow_dispatch:  
 
 jobs:
   create-release-note:
