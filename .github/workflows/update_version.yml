@@ -12,7 +12,9 @@ jobs:
         uses: actions/checkout@v3
       - name: create work branch
         run: |
-          #git push --delete origin sandbox/action-work
+          BRANCHES=`git branch`           
+          echo ${BRANCHES}
+          git push --delete origin sandbox/action-work
           git checkout -b sandbox/action-work main
       - name: update-version
         run: |
@@ -48,12 +50,16 @@ jobs:
       - name: push work branch
         run: |
           git add version.txt
+          
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
           git commit -m "version更新"
 
           git push origin sandbox/action-work
-
+      - name: push main branch
+        run: |
+          git checkout main
+          git merge sandbox/action-work
           # gh CLIが導入されていること前提
           #gh pr create -B "main" -t "Increment Version" -b ""
           
