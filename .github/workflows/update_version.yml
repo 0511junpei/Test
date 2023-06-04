@@ -8,8 +8,14 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: checkout main repository
+      - name: create work branch
+        run: |
+          git checkout -b sandbox/action-work main
+          git push origin sandbox/action-work
+      - name: checkout work branch
         uses: actions/checkout@v3
+        with: 
+          ref: sandbox/action-work
       - name: update-version
         run: |
           # 定数定義
@@ -42,6 +48,8 @@ jobs:
           # バージョンupdate
           printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION > version.txt
           cat version.txt
-          
+
           # gh CLIが導入されていること前提
-          gh pr create -B "remain" -t "Increment Version" -b ""
+          #gh pr create -B "main" -t "Increment Version" -b ""
+          
+          # hubコマンドでもprいけるの？https://www.ritolab.com/posts/206
