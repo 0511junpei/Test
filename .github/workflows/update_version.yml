@@ -58,7 +58,6 @@ jobs:
           git push origin sandbox/action-work
       - name: push main branch
         run: |
-          git checkout main
-          gh pr create -B sandbox/action-work -t "Increment Version" -b ""
+          gh pr create -B main -t "Increment Version" -b ""
           
           # hubコマンドでもprいけるの？https://www.ritolab.com/posts/206
