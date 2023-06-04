@@ -8,8 +8,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: checkout work branch
-        uses: actions/checkout@v3
+      #- name: checkout work branch
+      #  uses: actions/checkout@v3
       - name: create work branch
         run: |
           BRANCHES=`git branch`           
@@ -60,6 +60,7 @@ jobs:
         run: |
           git checkout main
           git merge sandbox/action-work
+          git push origin main
           # gh CLIが導入されていること前提
           #gh pr create -B "main" -t "Increment Version" -b ""
           
