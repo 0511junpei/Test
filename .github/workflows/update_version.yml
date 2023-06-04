@@ -44,4 +44,4 @@ jobs:
           cat version.txt
           
           # gh CLIが導入されていること前提
-          gh pr create -B main -t "Increment Version" -b ""
+          gh pr create -B "remain" -t "Increment Version" -b ""
