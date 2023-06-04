@@ -13,7 +13,6 @@ jobs:
       - name: create work branch
         run: |
           git checkout -b sandbox/action-work main
-          git push origin sandbox/action-work
       - name: update-version
         run: |
           # 定数定義
@@ -46,6 +45,7 @@ jobs:
           # バージョンupdate
           printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION > version.txt
           cat version.txt
+          git push origin sandbox/action-work
 
           # gh CLIが導入されていること前提
           #gh pr create -B "main" -t "Increment Version" -b ""
