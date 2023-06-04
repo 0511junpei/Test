@@ -59,9 +59,6 @@ jobs:
       - name: push main branch
         run: |
           git checkout main
-          git merge sandbox/action-work
-          git push origin main
-          # gh CLIが導入されていること前提
-          #gh pr create -B "main" -t "Increment Version" -b ""
+          gh pr create -B sandbox/action-work -t "Increment Version" -b ""
           
           # hubコマンドでもprいけるの？https://www.ritolab.com/posts/206
