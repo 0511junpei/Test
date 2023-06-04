@@ -48,6 +48,9 @@ jobs:
       - name: push work branch
         run: |
           git commit -m "version更新"
+          git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          git config --global user.name "0511junpei"
+
           git push origin sandbox/action-work
 
           # gh CLIが導入されていること前提
