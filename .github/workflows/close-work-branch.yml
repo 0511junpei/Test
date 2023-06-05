@@ -14,6 +14,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       WORK_BRANCH: sandbox/action-work
     steps:
+      - name: checkout work branch
+        uses: actions/checkout@v3
       - name: delete work branch
         run: |
           git push --delete origin ${{ env.WORK_BRANCH }}
