@@ -2,6 +2,7 @@
 # productionの承認がだるいのでいったんmainで運用してみる。
 
 on: 
+  push:
   pull_request:
     types: 
       - opened
