@@ -1,5 +1,5 @@
 on: 
-  push:
+  #push:
   pull_request:
     types: closed
     #branches: production
@@ -16,4 +16,4 @@ jobs:
       - name: create release note
         run: |
           VERSION=`cat version.txt`
-          gh release create ${VERSION}
+          gh release create "v"${VERSION}
