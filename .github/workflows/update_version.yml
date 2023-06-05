@@ -3,7 +3,7 @@ on:
     types: 
       - opened
     branches: 
-      - main
+      - sandbox/action-work
   workflow_dispatch:
 
 jobs:
