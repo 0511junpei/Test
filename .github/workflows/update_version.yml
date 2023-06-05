@@ -1,9 +1,12 @@
+# mainのプルリクopenするたびにバージョン上げるのもなんか微妙、
+# productionの承認がだるいのでいったんmainで運用してみる。
+
 on: 
   pull_request:
     types: 
       - opened
     branches: 
-      - sandbox/action-work
+      - main
   workflow_dispatch:
 
 jobs:
