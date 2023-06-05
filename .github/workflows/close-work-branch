@@ -1,0 +1,20 @@
+on: 
+  push:
+  pull_request:
+    types: 
+      - closed
+    branches: 
+      - sandbox/action-work
+  workflow_dispatch:
+
+jobs:
+  delete-wrok-branch:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      WORK_BRANCH: sandbox/action-work
+    steps:
+      - name: delete work branch
+        run: |
+          git branch -d ${{ env.WORK_BRANCH }}
+          git push --delete origin ${{ env.WORK_BRANCH }}
