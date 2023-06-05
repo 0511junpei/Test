@@ -10,9 +10,11 @@ jobs:
     steps:
       - name: checkout work branch
         uses: actions/checkout@v3
+      - run: 
+          git branch
       - name: create work branch
         run: |
-          git branch --delete origin sandbox/action-work
+          git push --delete origin sandbox/action-work
           git checkout -b sandbox/action-work main
       - name: update-version
         run: |
