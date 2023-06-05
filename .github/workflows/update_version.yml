@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v3
       - name: create work branch
         run: |
-          BRANCHES=`git branch`           
+          BRANCHES=`git branch -a`
           echo ${BRANCHES}
           git push --delete origin sandbox/action-work
           git checkout -b sandbox/action-work main
@@ -60,4 +60,3 @@ jobs:
         run: |
           gh pr create -B main -t "Increment Version" -b ""
           
-          # hubコマンドでもprいけるの？https://www.ritolab.com/posts/206
