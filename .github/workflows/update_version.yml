@@ -11,7 +11,8 @@ jobs:
       - name: checkout work branch
         uses: actions/checkout@v3
       - run: 
-          git branch
+          TEST=`git branch　-a`
+          echo ${TEST}
       - name: create work branch
         run: |
           git push --delete origin sandbox/action-work
