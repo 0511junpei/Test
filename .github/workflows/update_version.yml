@@ -19,9 +19,12 @@ jobs:
     steps:
       - name: checkout work branch
         uses: actions/checkout@v3
-      - name: create work branch
+      - name: delete work branch
         run: |
-          git checkout -b ${{ env.WORK_BRANCH }} main
+          git push origin  --delete ${{ env.WORK_BRANCH }} 
+      - name: create work branch
+        run: git checkout -b ${{ env.WORK_BRANCH }} main
+        if: ${{ always() }}
       - name: update-version
         run: |
           # 定数定義
