@@ -3,7 +3,7 @@ on:
   #push:
   pull_request:
     types: closed
-    branches: production
+    branches: main
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,12 @@ jobs:
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+      - run: |
+          git for-each-ref --shell \
+            --format='git log --oneline %(refname) ^origin/master' \
+            refs/heads/
       - name: create branch list
         id: branches
         run: |
