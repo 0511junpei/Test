@@ -17,7 +17,7 @@ jobs:
       - run: |
           git for-each-ref --shell \
             --format='git log --oneline %(refname) ^origin/master' \
-            refs/heads/
+            refs/remotes/
       - name: create branch list
         id: branches
         run: |
