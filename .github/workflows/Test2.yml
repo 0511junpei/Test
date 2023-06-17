@@ -15,9 +15,7 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
       - run: |
-          git for-each-ref --shell \
-            --format='git log --oneline %(refname) ^origin/master' \
-            refs/remotes/
+          git for-each-ref
       - name: create branch list
         id: branches
         run: |
