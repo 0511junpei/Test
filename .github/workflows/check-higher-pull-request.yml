@@ -18,6 +18,6 @@ jobs:
                                state: 'all'
                              });
              let open_list = pull_request_list.data.filter((item, index) => {
-                 return item.closed_at == 'null';
+                 return item.closed_at == null;
              })
              console.log(open_list)
