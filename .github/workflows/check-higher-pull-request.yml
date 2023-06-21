@@ -15,5 +15,10 @@ jobs:
                                owner: context.repo.owner,
                                repo: context.repo.repo,
                              });
+                   
+             console.log("list.data[0]")
+             console.log(list.data[0])
+             console.log("list.data[0].head")
              console.log(list.data[0].head)
-             console.log(list.data[0].data)
+             console.log("list.data[0].base")
+             console.log(list.data[0].base)
