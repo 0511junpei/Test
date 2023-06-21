@@ -15,4 +15,5 @@ jobs:
                                owner: context.repo.owner,
                                repo: context.repo.repo,
                              });
-             console.log(list)
+             console.log(list.data[0].head)
+             console.log(list.data[0].data)
