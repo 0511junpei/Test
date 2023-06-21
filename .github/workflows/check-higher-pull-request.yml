@@ -17,7 +17,7 @@ jobs:
                                head: '0511junpei:main',
                                state: 'all'
                              });
-             let open_list = json.pull_request_list.data.filter((item, index) => {
+             let open_list = JSON.pull_request_list.data.filter((item, index) => {
                  return item.closed_at == 'null';
              })
              console.log(open_list)
