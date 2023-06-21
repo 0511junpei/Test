@@ -1,5 +1,6 @@
 name: check-higher-pull-request
 on: 
+  push:
   workflow_dispatch:
 
 jobs:
