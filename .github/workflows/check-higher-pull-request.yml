@@ -14,6 +14,7 @@ jobs:
             let list = await github.rest.pulls.list({
                                owner: context.repo.owner,
                                repo: context.repo.repo,
-                               head: '0511junpei:main'
+                               head: '0511junpei:main',
+                               state: 'all'
                              });
              console.log(list)
