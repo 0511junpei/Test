@@ -1,0 +1,17 @@
+name: check-higher-pull-request
+on: 
+  workflow_dispatch:
+
+jobs:
+  create-branch-list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create branch list
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let list = await github.rest.pulls.list({
+                               owner: context.repo.owner,
+                               repo: context.repo.repo,
+                             });
+             console.log(list)
