@@ -21,7 +21,7 @@ jobs:
                                state: 'open'
                              });
              // let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
-             //let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
+             let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
              
              console.log(Object.keys(open_list).length);
              console.log(!Object.keys(open_list).length);
