@@ -9,13 +9,17 @@ jobs:
     steps:
       - name: create branch list
         uses: actions/github-script@v6
+        id: open_pull_request
         with:
           script: |
+            // 残プルリクエストを取得する
             const pull_request_list = await github.rest.pulls.list({
                                owner: context.repo.owner,
                                repo: context.repo.repo,
                                head: '0511junpei:main',
-                               state: 'all'
+                               state: 'open'
                              });
-             let open_list = pull_request_list.data.filter((item) => (item.closed_at == null))
-             console.log(open_list)
+             let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
+             console.log(open_list.length);
+             console.log(Object.keys(open_list).length);
+             console.log(!Object.keys(open_list).length);
