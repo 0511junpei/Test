@@ -21,9 +21,8 @@ jobs:
         run: |
           #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
           branches=$(echo '["test", "test2"]' | jq -c)
-          branches_test=$(git for-each-ref refs/remotes/origin/test* --format="%(refname:lstrip=-1)" | jq-c)
+          branches_test=$(git for-each-ref refs/remotes/origin/test* --format="%(refname:lstrip=-1)")
           echo "value=${branches}" >> $GITHUB_OUTPUT
-          echo ${branches} 
           echo ${branches_test}
   auto-merge-branch-unit:
     needs: create-branch-list
