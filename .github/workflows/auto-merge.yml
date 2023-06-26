@@ -15,6 +15,6 @@ jobs:
       - name: create branch list
         id: branches
         run: |
-          git worktree add develop_work/Alpha
-          git worktree add develop_work/Bravo
+          git worktree add Alpha_work develop/Alpha
+          git worktree add Bravo_work develop/Bravo
           git worktree list
