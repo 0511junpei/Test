@@ -32,7 +32,7 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
         with:
-          refs: ${{ matrix.branch }}
+          ref: ${{ matrix.branch }}
       - name: create pull request
         id: create-pull-request
         #run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
