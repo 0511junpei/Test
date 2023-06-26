@@ -12,22 +12,13 @@ jobs:
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
-      - name: checkout repository
+      - name: checkout main repository
         uses: actions/checkout@v3
-        with:
-          refs: develop/*
-      - run: |
-          git for-each-ref
       - name: create branch list
         id: branches
         run: |
-          #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
-          branches=$(echo '["test", "test2"]' | jq -c)
-          
-          test=$(git for-each-ref refs/remotes/origin/test* --format="%(refname:lstrip=-1)")
-          branches_test=`echo ${#test[@]}`
+          branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
-          echo ${branches_test}
   auto-merge-branch-unit:
     needs: create-branch-list
     runs-on: ubuntu-latest
@@ -38,21 +29,12 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
     steps:
-      - name: checkout main repository
+      - name: checkout repository
         uses: actions/checkout@v3
+        with:
+          refs: ${{ matrix.branch }}
       - name: create pull request
         id: create-pull-request
-        continue-on-error: true
-        run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
-      - name: error handling
-        if: ${{ steps.create-pull-request.outcome == 'failure' }}
-        run: |
-          echo ${{ steps.create-pull-request.outcome }}
-          echo ${{ steps.create-pull-request }}
-          exit 1
-      
-#- name: Merge
-      #  run: 
-      #    gh pr merge ${{steps.create-pull-request.outputs.PULL_REQUEST_URI}} --merge
-
-       
+        #run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
+        #run: git merge --no-ff
+        run: git branch
