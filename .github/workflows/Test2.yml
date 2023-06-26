@@ -29,6 +29,8 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
     steps:
+      - name: checkout main repository
+        uses: actions/checkout@v3
       - name: checkout repository
         uses: actions/checkout@v3
         with:
