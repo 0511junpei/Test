@@ -1,0 +1,15 @@
+name: branch-auto-merge
+on: 
+  push:
+  pull_request:
+    types: closed
+    branches: main
+  workflow_dispatch:
+
+jobs:
+  create-branch-list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create branch list
+        id: branches
+        run: git worktree list
