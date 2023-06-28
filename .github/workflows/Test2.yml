@@ -5,7 +5,7 @@ on:
   push:
   pull_request:
     types: closed
-    branches: main
+    branches: production
   workflow_dispatch:
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
           git fetch
           git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/HEAD --squash --allow-unrelated-histories
-          git log -n 20
+          #git log -n 20
           
           git add -A
           git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
