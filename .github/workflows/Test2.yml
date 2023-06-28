@@ -15,15 +15,11 @@ jobs:
       - name: checkout main repository
         uses: actions/checkout@v3
       - name: create branch list
-        id: branches
+        id: branchlist
         run: |
           git fetch
-          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
-          list=$(echo $temp_list | sed s/,$// )
-          echo "value=[ $list ]" >> $GITHUB_OUTPUT
-          #echo ${list}
-          #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
-          #echo "value=${branches}" >> $GITHUB_OUTPUT
+          branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort | sed s/,$//)
+          echo "branchlist=[ $branches ]" >> $GITHUB_OUTPUT
   auto-merge-branch-unit:
     needs: create-branch-list
     runs-on: ubuntu-latest
@@ -32,15 +28,17 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branchlist) }}
     steps:
+      - name: checkout main repository
+        uses: actions/checkout@v3
       - name: create pull request
         id: create-pull-request
         #run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
         #run: git merge --no-ff
         run: |
           git fetch
-          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/release/@\"@ | sed s/$/\",/ | sort )
+          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           list=$(echo $temp_list | sed s/,$// )
           #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
           echo ${list}
