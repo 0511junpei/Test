@@ -1,3 +1,5 @@
+# reference: https://tech.mirrativ.stream/entry/2023/01/27/105211
+
 name: branch-auto-merge
 on: 
   push:
@@ -18,7 +20,8 @@ jobs:
         id: branchlist
         run: |
           git fetch
-          branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort | sed s/,$//)
+          target_branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
+          branches=$(echo $target_branches | sed s/,$// )
           echo "branchlist=[ $branches ]" >> $GITHUB_OUTPUT
   auto-merge-branch-unit:
     needs: create-branch-list
@@ -38,7 +41,8 @@ jobs:
         #run: git merge --no-ff
         run: |
           git fetch
-          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
-          list=$(echo $temp_list | sed s/,$// )
-          #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
-          echo ${list}
+          git checkout local/${{ matrix.branch }} remotes/origin/${{ matrix.branch }}
+          git merge main
+          git add -A
+          git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
+          git push remotes/origin/${{ matrix.branch }}
