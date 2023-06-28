@@ -42,7 +42,7 @@ jobs:
         #run: git merge --no-ff
         run: |
           git fetch
-          git checkout local/${{ matrix.branch }} remotes/origin/${{ matrix.branch }}
+          git checkout pushtest remotes/origin/${{ matrix.branch }}
           git merge main
           git add -A
           git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
