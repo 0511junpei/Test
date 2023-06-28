@@ -48,4 +48,4 @@ jobs:
           
           git add -A
           git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
-          git push origin/${{ matrix.branch }}
+          git push remotes/origin/${{ matrix.branch }}
