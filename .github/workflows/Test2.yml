@@ -43,7 +43,11 @@ jobs:
         run: |
           git fetch
           git checkout -b ${{ matrix.branch }} origin/${{ matrix.branch }}
-          git merge main
+          
+          git branch
+          git checkout main
+          git merge ${{ matrix.branch }}
+          
           git add -A
           git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
-          git push remotes/origin/${{ matrix.branch }}
+          git push origin/${{ matrix.branch }}
