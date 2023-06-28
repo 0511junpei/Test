@@ -35,4 +35,8 @@ jobs:
         id: create-pull-request
         #run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
         #run: git merge --no-ff
-        run: git branch
+        run: |
+          git fetch
+          git branch
+          #git checkout release/${list[0]}
+          #git merge master
