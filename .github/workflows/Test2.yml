@@ -18,7 +18,7 @@ jobs:
         id: branches
         run: |
           git fetch
-          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@)
+          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           list=$(echo $temp_list | sed s/,$// )
           #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
           echo ${list}
