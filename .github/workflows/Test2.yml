@@ -42,8 +42,8 @@ jobs:
         #run: git merge --no-ff
         run: |
           git fetch
-          git checkout -b ${{ matrix.branch }} remotes/origin/${{ matrix.branch }}
-          git checkout main
+          git checkout -b local/${{ matrix.branch }} remotes/origin/${{ matrix.branch }}
+          #git checkout main
           git merge ${{ matrix.branch }}
           
           git add -A
