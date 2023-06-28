@@ -12,7 +12,7 @@ jobs:
   create-branch-list:
     runs-on: ubuntu-latest
     outputs: 
-      branches: ${{ steps.branches.outputs.value }}
+      branch_list: ${{ steps.branches.outputs.branch_list }}
     steps:
       - name: checkout main repository
         uses: actions/checkout@v3
