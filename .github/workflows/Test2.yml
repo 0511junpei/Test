@@ -44,9 +44,9 @@ jobs:
           git config --global user.name "0511junpei"
         
           git fetch
-          git checkout remotes/origin/${{ matrix.branch }}
-          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/HEAD --squash --allow-unrelated-histories
+          git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
+          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/HEAD --squash --allow-unrelated-histories
           
-          #git add -A
-          #git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
-          #git push remotes/origin/${{ matrix.branch }}
+          git add -A
+          git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
+          git push remotes/origin/${{ matrix.branch }}
