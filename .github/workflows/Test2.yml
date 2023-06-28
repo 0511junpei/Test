@@ -12,9 +12,16 @@ jobs:
     outputs: 
       branches: ${{ steps.branches.outputs.value }}
     steps:
+      - name: checkout main repository
+        uses: actions/checkout@v3
       - name: create branch list
         id: branches
         run: |
+          git fetch
+          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/develop/@\"@ | sed s/$/\",/ | sort )
+          list=$(echo $temp_list | sed s/,$// )
+          #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
+          echo ${list}
           branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
           echo "value=${branches}" >> $GITHUB_OUTPUT
   auto-merge-branch-unit:
@@ -27,15 +34,13 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
     steps:
-      - name: checkout main repository
-        uses: actions/checkout@v3
       - name: create pull request
         id: create-pull-request
         #run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
         #run: git merge --no-ff
         run: |
           git fetch
-          temp_list=$(git branch -a)
+          temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/release/@\"@ | sed s/$/\",/ | sort )
           list=$(echo $temp_list | sed s/,$// )
           #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
           echo ${list}
