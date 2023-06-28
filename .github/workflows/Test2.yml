@@ -37,6 +37,6 @@ jobs:
         #run: git merge --no-ff
         run: |
           git fetch
-          git branch
-          #git checkout release/${list[0]}
-          #git merge master
+          temp_list=$(git branch -a)
+          list=$(echo $temp_list | sed s/,$// )
+          #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
