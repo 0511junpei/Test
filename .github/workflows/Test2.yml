@@ -42,7 +42,7 @@ jobs:
         #run: git merge --no-ff
         run: |
           git fetch
-          git checkout ${{ matrix.branch }} origin/${{ matrix.branch }}
+          git checkout -b ${{ matrix.branch }} origin/${{ matrix.branch }}
           git merge main
           git add -A
           git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
