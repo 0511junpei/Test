@@ -29,8 +29,6 @@ jobs:
     steps:
       - name: checkout main repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: create pull request
         id: create-pull-request
         #run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
