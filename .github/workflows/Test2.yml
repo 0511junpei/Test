@@ -17,12 +17,13 @@ jobs:
       - name: checkout main repository
         uses: actions/checkout@v3
       - name: create branch list
-        id: branchlist
+        id: branch_list
         run: |
           git fetch
           target_branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           branches=$(echo $target_branches | sed s/,$// )
-          echo "branchlist=[ $branches ]" >> $GITHUB_OUTPUT
+          echo ${branches}
+          echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
   auto-merge-branch-unit:
     needs: create-branch-list
     runs-on: ubuntu-latest
@@ -31,7 +32,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        branch: ${{ fromJson(needs.create-branch-list.outputs.branchlist) }}
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
       - name: checkout main repository
         uses: actions/checkout@v3
