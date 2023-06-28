@@ -45,7 +45,7 @@ jobs:
         
           git fetch
           git checkout remotes/origin/${{ matrix.branch }}
-          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} origin/main
+          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} origin/main
           
           #git add -A
           #git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
