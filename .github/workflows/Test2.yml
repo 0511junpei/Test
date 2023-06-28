@@ -39,6 +39,10 @@ jobs:
       - name: create pull request
         id: create-pull-request
         run: |
+          # ここの認証なんとかしたい。トークン設定にしよう。
+          git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          git config --global user.name "0511junpei"
+        
           git fetch
           git checkout remotes/origin/${{ matrix.branch }}
           git checkout main
