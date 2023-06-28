@@ -40,3 +40,4 @@ jobs:
           temp_list=$(git branch -a)
           list=$(echo $temp_list | sed s/,$// )
           #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
+          echo ${list}
