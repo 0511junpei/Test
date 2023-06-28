@@ -20,10 +20,10 @@ jobs:
           git fetch
           temp_list=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           list=$(echo $temp_list | sed s/,$// )
-          #echo "release_list=[ $list ]" >> $GITHUB_OUTPUT
-          echo ${list}
-          branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
-          echo "value=${branches}" >> $GITHUB_OUTPUT
+          echo "value=[ $list ]" >> $GITHUB_OUTPUT
+          #echo ${list}
+          #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
+          #echo "value=${branches}" >> $GITHUB_OUTPUT
   auto-merge-branch-unit:
     needs: create-branch-list
     runs-on: ubuntu-latest
