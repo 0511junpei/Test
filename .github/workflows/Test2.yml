@@ -46,8 +46,8 @@ jobs:
           git fetch
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
-          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --squash --allow-unrelated-histories
-          echo $?
+          test=`echo git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --squash --allow-unrelated-histories`
+          echo ${test}
           #git log -n 20
           
           #git add -A
