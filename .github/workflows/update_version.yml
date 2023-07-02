@@ -63,7 +63,7 @@ jobs:
 
           # 最新バージョン生成
           new_version=`printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION`
-          echo "new_version_env=$new_version" >> $GITHUB_ENV
+          echo "new_version_value=$new_version" >> $GITHUB_OUTPUT
 
       # developへのマージ
       #- name: push work branch
@@ -83,4 +83,4 @@ jobs:
     needs: update-version
     uses: 0511junpei/Test/.github/workflows/Test2.yml@main
     with:
-      version: echo "${{ env.new_version_env }}"
+      version: needs.update-version.outputs.new_version
