@@ -81,8 +81,5 @@ jobs:
       #- name: push main branch
       #  run: |
       #    gh pr create -B main -t "Increment Version for bot" -b ""
-      - name: variable test
-        run: |
-          #echo "$new_version_value"
-          echo "${{ env.new_version_env }}"
-          echo "$NEW_VERSION_PATH"
+  job1:
+    uses: 0511junpei/Test/.github/workflows/Test2.yml@main
