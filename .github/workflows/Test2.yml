@@ -10,8 +10,7 @@ on:
     inputs:
       version:
         description: 'update version value'
-        default: 0.01.000
-        required: true
+        required: false
         type: string
   workflow_run:
     workflows: [Update Version]
@@ -25,12 +24,7 @@ jobs:
     outputs: 
       branch_list: ${{ steps.branch_list.outputs.branch_list }}
     steps:
-      - name: variable test
-        run: |
-          echo "$new_version_value"
-          echo "${{ env.new_version_env }}"
-          echo "$NEW_VERSION_PATH"
-      - name: checkout main repository
+      - name: checkout base repository
         uses: actions/checkout@v3
       - name: create branch list
         id: branch_list
@@ -40,7 +34,7 @@ jobs:
           branches=$(echo $target_branches | sed s/,$// )
           echo ${branches}
           echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
-  auto-merge-branch-unit:
+  update-version:
     needs: create-branch-list
     runs-on: ubuntu-latest
     env: 
@@ -50,7 +44,26 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
-      - name: checkout main repository
+      #- name: checkout base repository
+      #  uses: actions/checkout@v3
+      - name: create pull request
+        id: create-pull-request
+        run: |
+          # ここの認証なんとかしたい。トークン設定にしよう。
+          git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          git config --global user.name "0511junpei"
+          git pull
+  branch-auto-merge:
+    needs: create-branch-list
+    runs-on: ubuntu-latest
+    env: 
+      GH_TOKEN: ${{ github.token }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
+    steps:
+      - name: checkout base repository
         uses: actions/checkout@v3
       - name: create pull request
         id: create-pull-request
