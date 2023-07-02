@@ -82,4 +82,4 @@ jobs:
       #  run: |
       #    gh pr create -B main -t "Increment Version for bot" -b ""
   job1:
-    uses: Test2.yml@main
+    uses: .github/workflows/Test2.yml@main
