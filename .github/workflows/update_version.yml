@@ -13,11 +13,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-version:
+  calculation-new-version:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ github.token }}
-      #WORK_BRANCH: sandbox/action-work
     outputs: 
       new_version: ${{ steps.new_version_id.outputs.new_version_value }}
     steps:
@@ -64,23 +61,8 @@ jobs:
           # 最新バージョン生成
           new_version=`printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION`
           echo "new_version_value=$new_version" >> $GITHUB_OUTPUT
-
-      # developへのマージ
-      #- name: push work branch
-      #  run: |
-      #    git add version.txt
-      #    
-      #    # ここの認証なんとかしたい。トークン設定にしよう。
-      #    git config --global user.email "shok2gok.tdos3ky@icloud.com"
-      #    git config --global user.name "0511junpei"
-      #    git commit -m "version更新"
-
-      #    git push origin ${{ env.WORK_BRANCH }}
-      #- name: push main branch
-      #  run: |
-      #    gh pr create -B main -t "Increment Version for bot" -b "
-  job1:
-    needs: update-version
+  update-branches:
+    needs: calculation-new-version
     uses: 0511junpei/Test/.github/workflows/Test2.yml@main
     with:
-      version: ${{ needs.update-version.outputs.new_version }}
+      version: ${{ needs.calculation-new-version.outputs.new_version }}
