@@ -1,13 +1,15 @@
-# mainのプルリクopenするたびにバージョン上げるのもなんか微妙、
-# productionの承認がだるいのでいったんmainで運用してみる。
-
+# develop自動マージの際に、カウントアップするか？
+# productionのバージョンをもとに、developのバージョンを設定する
+# develop新規作成時も自動実行したい
+# codeownerでいじられないように制御するか？Action実施者以外。
+name: Update Version
 on: 
-  #push:
+  push:
   pull_request:
     types: 
-      - opened
+      - closed
     branches: 
-      - main
+      - production
   workflow_dispatch:
 
 jobs:
@@ -15,31 +17,36 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
-      WORK_BRANCH: sandbox/action-work
+      #WORK_BRANCH: sandbox/action-work
+    outputs: 
+      new_version: ${{ steps.new_version_id.outputs.new_version_value }}
     steps:
       - name: checkout work branch
         uses: actions/checkout@v3
-      - name: delete work branch
-        run: |
-          git push origin  --delete ${{ env.WORK_BRANCH }} 
-      - name: create work branch
-        run: git checkout -b ${{ env.WORK_BRANCH }} main
-        if: ${{ always() }}
+        with:
+          ref: production
+      #- name: delete work branch
+      #  run: |
+      #    git push origin  --delete ${{ env.WORK_BRANCH }} 
+      #- name: create work branch
+      #  run: git checkout -b ${{ env.WORK_BRANCH }} main
+      #  if: ${{ always() }}
       - name: update-version
+        id: new_version_id
         run: |
           # 定数定義
           MAX_MINOR=99
           MAX_REVISION=999
           
           # バージョン取得
-          VERSION=`cat version.txt`
-          CURRENT_MAJOR=`echo $VERSION | cut -d "." -f 1`
-          CURRENT_MINOR=`echo $VERSION | cut -d "." -f 2`
-          CURRENT_REVISION=`echo $VERSION | cut -d "." -f 3`
+          CURRENT_VERSION=`cat version.txt`
+          CURRENT_MAJOR=`echo $CURRENT_VERSION | cut -d "." -f 1`
+          CURRENT_MINOR=`echo $CURRENT_VERSION | cut -d "." -f 2`
+          CURRENT_REVISION=`echo $CURRENT_VERSION | cut -d "." -f 3`
 
           # バージョンカウントアップ（基本、リビジョン+1で済む）
           NEW_MAJOR=`echo ${CURRENT_MAJOR}`
-          NEW_MINOR=`echo ${CURRENT_MINOR}`          
+          NEW_MINOR=`echo ${CURRENT_MINOR}`
           NEW_REVISION=`expr $CURRENT_REVISION + 1`
           
           # リビジョンが最大値を超えた場合は、マイナーをカウントアップ
@@ -54,18 +61,23 @@ jobs:
               fi
           fi
 
-          # バージョンupdate
-          printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION > version.txt
-      - name: push work branch
-        run: |
-          git add version.txt
+          # 最新バージョン生成
+          new_version=`printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION`
+          echo "new_version_value=$new_version" >> $GITHUB_OUTPUT
+          echo "new_version_env=$new_version" >> $GITHUB_ENV
+          echo "new_version_path=$new_version" >> $GITHUB_PATH
           
-          # ここの認証なんとかしたい。トークン設定にしよう。
-          git config --global user.email "shok2gok.tdos3ky@icloud.com"
-          git config --global user.name "0511junpei"
-          git commit -m "version更新"
+          # developへのマージ
+      #- name: push work branch
+      #  run: |
+      #    git add version.txt
+      #    
+      #    # ここの認証なんとかしたい。トークン設定にしよう。
+      #    git config --global user.email "shok2gok.tdos3ky@icloud.com"
+      #    git config --global user.name "0511junpei"
+      #    git commit -m "version更新"
 
-          git push origin ${{ env.WORK_BRANCH }}
-      - name: push main branch
-        run: |
-          gh pr create -B main -t "Increment Version for bot" -b ""
+      #    git push origin ${{ env.WORK_BRANCH }}
+      #- name: push main branch
+      #  run: |
+      #    gh pr create -B main -t "Increment Version for bot" -b ""
