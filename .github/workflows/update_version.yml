@@ -83,4 +83,4 @@ jobs:
     needs: update-version
     uses: 0511junpei/Test/.github/workflows/Test2.yml@main
     with:
-      version: needs.update-version.outputs.new_version
+      version: ${{ needs.update-version.outputs.new_version }}
