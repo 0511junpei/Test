@@ -18,16 +18,7 @@ on:
       - completed
   workflow_dispatch:
 
-jobs: 
-  auth:
-    runs-on: ubuntu-latest
-    steps:
-      - name: auth
-        run: |
-          # ここの認証なんとかしたい。トークン設定にしよう。
-          git config --global user.email "shok2gok.tdos3ky@icloud.com"
-          git config --global user.name "0511junpei"
-          
+jobs:          
   create-branch-list:
     runs-on: ubuntu-latest
     outputs: 
@@ -60,6 +51,9 @@ jobs:
           ref: ${{ matrix.branch }}
       - name: update version
         run: |
+          git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          git config --global user.name "0511junpei"
+          
           echo "${{ inputs.version }}" >> version.txt
           git add
           git commit -m "Auto Increment "${{ matrix.branch }}
