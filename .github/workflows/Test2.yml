@@ -21,8 +21,8 @@ jobs:
       - name: variable test
         run: |
           echo "$new_version_value"
-          echo "$env.new_version_env"
-          echo "$new_version_path"
+          echo "${{ env.new_version_env }}"
+          echo "$NEW_VERSION_PATH"
       - name: checkout main repository
         uses: actions/checkout@v3
       - name: create branch list
