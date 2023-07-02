@@ -10,6 +10,7 @@ on:
     inputs:
       version:
         description: 'update version value'
+        default: ${{ null }}
         required: false
         type: string
   workflow_run:
@@ -37,9 +38,9 @@ jobs:
 
   # 入力パラメータ：versionが設定されている場合のみ実行
   update-version:
-    if: ${{ inputs.version }} != ''
     needs: create-branch-list
     runs-on: ubuntu-latest
+    if: ${{ inputs.version }} != ${{ null }}
     strategy:
       max-parallel: 1
       matrix:
