@@ -83,5 +83,4 @@ jobs:
     needs: update-version
     uses: 0511junpei/Test/.github/workflows/Test2.yml@main
     with:
-      #version: echo "${{ env.new_version_env }}"
-      version: "0.00.000"
+      version: echo "${{ env.new_version_env }}"
