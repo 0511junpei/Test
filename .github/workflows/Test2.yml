@@ -2,10 +2,14 @@
 
 name: branch-auto-merge
 on: 
-  push:
-  pull_request:
-    types: closed
-    branches: production
+  #push:
+  #pull_request:
+  #  types: closed
+  #  branches: production
+  workflow_run:
+    workflows: [Update Version]
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
@@ -14,6 +18,11 @@ jobs:
     outputs: 
       branch_list: ${{ steps.branch_list.outputs.branch_list }}
     steps:
+      - name: variable test
+        run: |
+          echo "$new_version_value"
+          echo "$env.new_version_env"
+          echo "$new_version_path"
       - name: checkout main repository
         uses: actions/checkout@v3
       - name: create branch list
