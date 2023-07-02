@@ -63,9 +63,12 @@ jobs:
 
           # 最新バージョン生成
           new_version=`printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION`
-          echo "new_version_value=$new_version" >> $GITHUB_OUTPUT
           echo "new_version_env=$new_version" >> $GITHUB_ENV
-          echo "new_version_path=$new_version" >> $GITHUB_PATH
+
+      - name: update-version
+        uses: 0511junpei/Test/.github/workflows/Test2.yml@main
+        with:
+          version: ${{ env.new_version_env }}
           
       # developへのマージ
       #- name: push work branch
@@ -80,6 +83,6 @@ jobs:
       #    git push origin ${{ env.WORK_BRANCH }}
       #- name: push main branch
       #  run: |
-      #    gh pr create -B main -t "Increment Version for bot" -b ""
+      #    gh pr create -B main -t "Increment Version for bot" -b "
   job1:
     uses: 0511junpei/Test/.github/workflows/Test2.yml@main
