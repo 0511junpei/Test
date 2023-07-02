@@ -57,6 +57,7 @@ jobs:
           echo "${{ inputs.version }}" > version.txt
           git add version.txt
           git commit -m "Auto Increment "${{ matrix.branch }}
+          git branch -a
           git push remotes/origin/${{ matrix.branch }} ${{ matrix.branch }}
 
   branch-auto-merge:
