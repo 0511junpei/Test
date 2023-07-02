@@ -6,6 +6,7 @@ on:
   #pull_request:
   #  types: closed
   #  branches: production
+  workflow_call:
   workflow_run:
     workflows: [Update Version]
     types:
