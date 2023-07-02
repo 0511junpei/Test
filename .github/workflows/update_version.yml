@@ -67,7 +67,7 @@ jobs:
           echo "new_version_env=$new_version" >> $GITHUB_ENV
           echo "new_version_path=$new_version" >> $GITHUB_PATH
           
-          # developへのマージ
+      # developへのマージ
       #- name: push work branch
       #  run: |
       #    git add version.txt
@@ -81,3 +81,8 @@ jobs:
       #- name: push main branch
       #  run: |
       #    gh pr create -B main -t "Increment Version for bot" -b ""
+      - name: variable test
+        run: |
+          #echo "$new_version_value"
+          echo "${{ env.new_version_env }}"
+          echo "$new_version_path"
