@@ -80,6 +80,7 @@ jobs:
       #  run: |
       #    gh pr create -B main -t "Increment Version for bot" -b "
   job1:
+    needs: update-version
     uses: 0511junpei/Test/.github/workflows/Test2.yml@main
     with:
       #version: echo "${{ env.new_version_env }}"
