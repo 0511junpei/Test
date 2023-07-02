@@ -7,6 +7,12 @@ on:
   #  types: closed
   #  branches: production
   workflow_call:
+    inputs:
+      version:
+        description: 'update version value'
+        default: 0.01.000
+        required: true
+        type: string
   workflow_run:
     workflows: [Update Version]
     types:
