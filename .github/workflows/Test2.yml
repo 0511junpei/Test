@@ -59,7 +59,7 @@ jobs:
           echo ${{ inputs.version }}
           if [ "$CURRENT_VERSION" -ne "${{ inputs.version }}" ]; then
               echo "更新前後のバージョン一致のためスキップ"
-              return 1;
+              return 0;
           fi
           
           echo "${{ inputs.version }}" > version.txt
@@ -84,7 +84,8 @@ jobs:
         run: |
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
-          git checkout -b ${{ matrix.branch }}-work origin/${{ matrix.branch }}
+          git fetch
+          git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
           git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main
           echo "test"
