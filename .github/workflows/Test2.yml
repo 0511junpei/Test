@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       branch_list: ${{ steps.branch_list.outputs.branch_list }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: checkout base repository
         uses: actions/checkout@v3
