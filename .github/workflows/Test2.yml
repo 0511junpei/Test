@@ -55,7 +55,7 @@ jobs:
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
           
-          if [`cat version.txt` -eq ${{ inputs.version }}]; then
+          if [ `cat version.txt` -eq ${{ inputs.version }} ]; then
               echo "更新前後のバージョン一致のためスキップ"
               return 1;
           fi
