@@ -57,7 +57,7 @@ jobs:
           CURRENT_VERSION=`cat version.txt`
           echo $CURRENT_VERSION
           echo ${{ inputs.version }}
-          if [ "$CURRENT_VERSION" -eq ${{ inputs.version }} ]; then
+          if [ "$CURRENT_VERSION" -eq "${{ inputs.version }}" ]; then
               echo "更新前後のバージョン一致のためスキップ"
               return 1;
           fi
@@ -80,17 +80,13 @@ jobs:
     steps:
       - name: checkout base repository
         uses: actions/checkout@v3
-        with:
-          ref: ${{ matrix.branch }}
       - name: branch merge
         run: |
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
-          git fetch
-          git branch -a
-          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
-          #git checkout remotes/origin/HEAD
-          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} origin/main
+          git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
+          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
+          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main
           echo "test"
           cat .github/workflows/Test.yml
           cat version.txt
