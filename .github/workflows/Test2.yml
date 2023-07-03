@@ -22,9 +22,9 @@ on:
 jobs:          
   create-branch-list:
     runs-on: ubuntu-latest
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs: 
       branch_list: ${{ steps.branch_list.outputs.branch_list }}
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: checkout base repository
         uses: actions/checkout@v3
@@ -82,6 +82,17 @@ jobs:
         uses: actions/checkout@v3
       - name: branch merge
         run: |
+          function catch {
+            echo Catch
+            cat .github/workflows/Test.yml
+            cat version.txt
+          }
+          function finally {
+            echo Finally
+          }
+          trap catch ERR
+          trap finally EXIT
+        
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
           git fetch
