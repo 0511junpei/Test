@@ -61,7 +61,7 @@ jobs:
           git push origin ${{ matrix.branch }}:${{ matrix.branch }}
 
   branch-auto-merge:
-    needs: [create-branch-list, update-version]
+    needs: create-branch-list
     runs-on: ubuntu-latest
     env: 
       GH_TOKEN: ${{ github.token }}
