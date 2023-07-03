@@ -89,6 +89,9 @@ jobs:
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
           git merge -m "Auto Merge 'main' To "${{ matrix.branch }} origin/main --allow-unrelated-histories
+          cat .github/workflows/Test.yml
+          cat version.txt
+
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
           #git log -n 20
