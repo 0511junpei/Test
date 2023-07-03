@@ -61,7 +61,7 @@ jobs:
           git push origin ${{ matrix.branch }}:${{ matrix.branch }}
 
   branch-auto-merge:
-    needs: create-branch-list
+    needs: [create-branch-list, update-version]
     runs-on: ubuntu-latest
     env: 
       GH_TOKEN: ${{ github.token }}
@@ -70,16 +70,15 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
-      #- name: checkout base repository
-      #  uses: actions/checkout@v3
+      - name: checkout base repository
+        uses: actions/checkout@v3
       - name: branch merge
         run: |
-          git pull
+          git fetch
           git branch -a
-          #git fetch
-          git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
+          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
-          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --allow-unrelated-histories
+          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --allow-unrelated-histories
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
           #git log -n 20
