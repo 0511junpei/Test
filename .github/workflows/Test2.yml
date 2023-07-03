@@ -35,8 +35,6 @@ jobs:
           branches=$(echo $target_branches | sed s/,$// )
           echo ${branches}
           echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
-          echo  ${{ inputs.version }}
-          echo  ${{ null }}
 
   # 入力パラメータ：versionが設定されている場合のみ実行
   update-version:
@@ -56,7 +54,6 @@ jobs:
         run: |
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
-          echo 
           echo "${{ inputs.version }}" > version.txt
           git add version.txt
           git commit -m "Auto Increment "${{ matrix.branch }}
@@ -73,14 +70,14 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
-      - name: checkout base repository
-        uses: actions/checkout@v3
-      - name: create pull request
-        id: create-pull-request
+      #- name: checkout base repository
+      #  uses: actions/checkout@v3
+      - name: branch merge
         run: |
-          #git pull
-          git fetch
-          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
+          git pull
+          git branch -a
+          #git fetch
+          git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
           #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --allow-unrelated-histories
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
