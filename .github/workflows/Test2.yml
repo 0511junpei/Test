@@ -54,6 +54,7 @@ jobs:
         run: |
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
+          
           current_version=`cat version.txt`
           if [ "$current_version" = "${{ inputs.version }}" ]; then
               echo "更新前後のバージョン一致のためスキップ"
@@ -87,9 +88,11 @@ jobs:
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
           
           git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories
-
-          cat .github/workflows/Test.yml
-          cat version.txt
+          if [ $? -eq 1 ]; then
+              echo "コンフリ"
+              cat .github/workflows/Test.yml
+              cat version.txt
+          fi
 
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
