@@ -54,12 +54,10 @@ jobs:
         run: |
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
-          CURRENT_VERSION=`cat version.txt`
-          echo $CURRENT_VERSION
-          echo ${{ inputs.version }}
-          if [ "$CURRENT_VERSION" -ne "${{ inputs.version }}" ]; then
+          current_version=`cat version.txt`
+          if [ "$current_version" = "${{ inputs.version }}" ]; then
               echo "更新前後のバージョン一致のためスキップ"
-              return 0;
+              return 0
           fi
           
           echo "${{ inputs.version }}" > version.txt
@@ -87,10 +85,11 @@ jobs:
           git fetch
           git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
-          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main
           echo "test"
           cat .github/workflows/Test.yml
           cat version.txt
+          
+          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories
 
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
