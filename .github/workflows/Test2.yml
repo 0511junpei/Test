@@ -35,12 +35,14 @@ jobs:
           branches=$(echo $target_branches | sed s/,$// )
           echo ${branches}
           echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
+          echo  ${{ inputs.version }}
+          echo  ${{ null }}
 
   # 入力パラメータ：versionが設定されている場合のみ実行
   update-version:
     needs: create-branch-list
     runs-on: ubuntu-latest
-    if: ${{ inputs.version }} != ${{ null }}
+    if: ${{ inputs.version != null }}
     strategy:
       max-parallel: 1
       matrix:
