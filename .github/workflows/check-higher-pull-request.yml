@@ -1,0 +1,26 @@
+name: check-higher-pull-request
+on: 
+  #push:
+  workflow_dispatch:
+
+jobs:
+  create-branch-list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create branch list
+        uses: actions/github-script@v6
+        id: open_pull_request
+        with:
+          script: |
+            // 残プルリクエストを取得する
+            const pull_request_list = await github.rest.pulls.list({
+                               owner: context.repo.owner,
+                               repo: context.repo.repo,
+                               //head: '0511junpei:main',
+                               head: '0511junpei:test4',
+                               state: 'open'
+                             });
+             let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
+             
+             //console.log(!Object.keys(open_list).length);
+             return !Object.keys(open_list).length;

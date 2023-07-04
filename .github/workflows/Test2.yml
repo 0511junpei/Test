@@ -1,25 +1,74 @@
+# reference: https://tech.mirrativ.stream/entry/2023/01/27/105211
+
 name: branch-auto-merge
 on: 
   #push:
-  pull_request:
-    types: closed
-    branches: production
+  #pull_request:
+  #  types: closed
+  #  branches: production
+  workflow_call:
+    inputs:
+      version:
+        description: 'update version value'
+        default: ${{ null }}
+        required: false
+        type: string
+  workflow_run:
+    workflows: [Update Version]
+    types:
+      - completed
   workflow_dispatch:
 
-jobs:
+jobs:          
   create-branch-list:
     runs-on: ubuntu-latest
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs: 
-      branches: ${{ steps.branches.outputs.value }}
+      branch_list: ${{ steps.branch_list.outputs.branch_list }}
     steps:
+      - name: checkout base repository
+        uses: actions/checkout@v3
       - name: create branch list
-        id: branches
+        id: branch_list
         run: |
-          #branches=$(echo '["develop/Alpha", "develop/Bravo"]' | jq -c)
-          branches=$(echo '["test", "test2"]' | jq -c)
-          echo "value=${branches}" >> $GITHUB_OUTPUT
-   
-  auto-merge-branch-unit:
+          git fetch
+          target_branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
+          branches=$(echo $target_branches | sed s/,$// )
+          echo ${branches}
+          echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
+
+  # 入力パラメータ：versionが設定されている場合のみ実行
+  update-version:
+    needs: create-branch-list
+    runs-on: ubuntu-latest
+    if: ${{ inputs.version != null }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.branch }}
+      - name: update version
+        run: |
+          git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          git config --global user.name "0511junpei"
+          
+          current_version=`cat version.txt`
+          if [ "$current_version" = "${{ inputs.version }}" ]; then
+              echo "更新前後のバージョン一致のためスキップ"
+              exit 0
+          fi
+          
+          echo "${{ inputs.version }}" > version.txt
+          git add version.txt
+          git commit -m "Auto Increment "${{ matrix.branch }}
+          git branch -a
+          git push origin ${{ matrix.branch }}:${{ matrix.branch }}
+
+  branch-auto-merge:
     needs: create-branch-list
     runs-on: ubuntu-latest
     env: 
@@ -27,23 +76,37 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        branch: ${{ fromJson(needs.create-branch-list.outputs.branches) }}
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
-      - name: checkout main repository
+      - name: checkout base repository
         uses: actions/checkout@v3
-      - name: create pull request
-        id: create-pull-request
-        continue-on-error: true
-        run: gh pr create -B ${{ matrix.branch }} -t "Auto Merge 'main' To "${{ matrix.branch }} -b ""
-      - name: error handling
-        if: ${{ steps.create-pull-request.outcome == 'failure' }}
+      - name: branch merge
         run: |
-          echo ${{ steps.create-pull-request.outcome }}
-          echo ${{ steps.create-pull-request }}
-          exit 1
-      
-#- name: Merge
-      #  run: 
-      #    gh pr merge ${{steps.create-pull-request.outputs.PULL_REQUEST_URI}} --merge
-
-       
+          function catch {
+            git status
+            test=$(git status)
+            echo "test2"
+            echo $test
+          }
+          function finally {
+            echo Finally
+            echo $?
+          }
+          trap catch ERR
+          trap finally EXIT
+        
+          git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          git config --global user.name "0511junpei"
+          git pull remotes/origin/${{ matrix.branch }}
+          #git fetch
+          git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
+          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
+          
+          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories
+          #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
+          #echo $test
+          #git log -n 20
+          
+          #git add -A
+          #git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
+          #git push remotes/origin/${{ matrix.branch }}
