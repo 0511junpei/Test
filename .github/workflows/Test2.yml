@@ -100,8 +100,8 @@ jobs:
           git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
           
-          test=echo "git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories"
-
+          test=$(git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories")
+          echo $test 
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
           #git log -n 20
