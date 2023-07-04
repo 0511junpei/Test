@@ -85,8 +85,9 @@ jobs:
           function catch {
             git status
             test=$(git status)
-            echo "test2"
             echo $test
+            
+            git merge --abort
           }
           function finally {
             echo Finally
