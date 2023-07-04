@@ -89,6 +89,7 @@ jobs:
           }
           function finally {
             echo Finally
+            echo $?
           }
           trap catch ERR
           trap finally EXIT
@@ -99,12 +100,7 @@ jobs:
           git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
           
-          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories
-          if [ $? -eq 1 ]; then
-              echo "コンフリ"
-              cat .github/workflows/Test.yml
-              cat version.txt
-          fi
+          test=echo "git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories"
 
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
