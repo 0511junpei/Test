@@ -83,9 +83,10 @@ jobs:
       - name: branch merge
         run: |
           function catch {
-            echo Catch
-            cat .github/workflows/Test.yml
-            cat version.txt
+            git status
+            test=$(git status)
+            echo "test2"
+            echo $test
           }
           function finally {
             echo Finally
@@ -100,8 +101,7 @@ jobs:
           git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
           
-          test=$(git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories)
-          echo $test 
+          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
           #git log -n 20
