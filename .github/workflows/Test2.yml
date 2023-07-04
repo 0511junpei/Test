@@ -97,7 +97,8 @@ jobs:
         
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
-          git fetch
+          git pull remotes/origin/${{ matrix.branch }}
+          #git fetch
           git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
           #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
           
