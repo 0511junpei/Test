@@ -88,6 +88,8 @@ jobs:
             echo $test
             
             git merge --abort
+            test2=$(git merge --abort)
+            echo $test2
           }
           function finally {
             echo Finally
