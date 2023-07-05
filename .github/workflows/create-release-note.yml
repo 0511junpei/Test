@@ -2,18 +2,30 @@ on:
   #push:
   pull_request:
     types: closed
-    #branches: production
+    branches: production
   workflow_dispatch:  
 
 jobs:
   create-release-note:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: checkout work branch
-        uses: actions/checkout@v3
-      - name: create release note
-        run: |
-          VERSION=`cat version.txt`
-          gh release create "v"${VERSION}
+      - name: create branch list
+        uses: actions/github-script@v6
+        id: open_pull_request
+        with:
+          script: |
+          　// ①プルリク取得
+            // ①からプル陸タイトル取得（.*yyyymmdd.*）
+            // リリースノート作成
+            // createRelease
+            // https://octokit.github.io/rest.js/v19#repos-generate-release-notes
+          
+            const result = await github.rest.repos.createRelease({
+                               owner: context.repo.owner,
+                               repo: context.repo.repo,
+                               tag_name: '20230706'
+                             });
+             //let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
+             
+             console.log(result);
+             //return !Object.keys(open_list).length;
