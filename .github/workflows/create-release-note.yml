@@ -1,7 +1,7 @@
 on: 
   #push:
   pull_request:
-    types: closed
+    types: opened
     branches: production
   workflow_dispatch:  
 
