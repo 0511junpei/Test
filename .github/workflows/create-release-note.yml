@@ -11,15 +11,15 @@ jobs:
     steps:
       - name: create branch list
         uses: actions/github-script@v6
-        id: open_pull_request
         with:
           script: |
-          　// ①プルリク取得
+          　// プルリク取得:
             // ①からプル陸タイトル取得（.*yyyymmdd.*）
             // リリースノート作成
             // createRelease
             // https://octokit.github.io/rest.js/v19#repos-generate-release-notes
           
+
             const result = await github.rest.repos.createRelease({
                                owner: context.repo.owner,
                                repo: context.repo.repo,
