@@ -11,9 +11,34 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: checkout work branch
-        uses: actions/checkout@v3
-      - name: create release note
-        run: |
-          VERSION=`cat version.txt`
-          gh release create "v"${VERSION}
+      - name: create branch list
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pull = await github.rest.pulls.get({
+                                   owner: context.repo.owner,
+                                   repo: context.repo.repo,
+                                   pull_number: ${{ github.event.number }}
+                               });
+            // タイトルからリリース日を取得
+            //const yyyyMmDd = pull.data.title.match(/.*([0-9]{4}[01][0-9][0-3][0-9]).*/);
+            
+            // 取得できなかった場合は現在日付を設定
+            //if (!yyyyMmDd) {                
+                const current = new Date();
+                yyyyMmDd = String(current.getFullYear()) + String(current.getMonth() + 1) + String(current.getDate());
+                console.log(yyyyMmDd)
+            //}
+            
+            const result = await github.rest.repos.createRelease({
+                                     owner: context.repo.owner,
+                                     repo: context.repo.repo,match()
+                                     tag_name: "tagging-" + yyyyMmDd,
+                                     target_commitish: pull.data.base.ref,
+                                     name: "release-" + yyyyMmDd,
+                                     body: pull.data.body + " #29",
+                                     generate_release_notes: true
+                                 });
+
+             console.log(result);
+
