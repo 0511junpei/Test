@@ -6,24 +6,27 @@ on:
   #pull_request:
   #  types: closed
   #  branches: production
+  workflow_call:
+    inputs:
+      version:
+        description: 'update version value'
+        default: ${{ null }}
+        required: false
+        type: string
   workflow_run:
     workflows: [Update Version]
     types:
       - completed
   workflow_dispatch:
 
-jobs:
+jobs:          
   create-branch-list:
     runs-on: ubuntu-latest
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs: 
       branch_list: ${{ steps.branch_list.outputs.branch_list }}
     steps:
-      - name: variable test
-        run: |
-          echo "$new_version_value"
-          echo "$env.new_version_env"
-          echo "$new_version_path"
-      - name: checkout main repository
+      - name: checkout base repository
         uses: actions/checkout@v3
       - name: create branch list
         id: branch_list
@@ -33,7 +36,39 @@ jobs:
           branches=$(echo $target_branches | sed s/,$// )
           echo ${branches}
           echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
-  auto-merge-branch-unit:
+
+  # 入力パラメータ：versionが設定されている場合のみ実行
+  update-version:
+    needs: create-branch-list
+    runs-on: ubuntu-latest
+    if: ${{ inputs.version != null }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.branch }}
+      - name: update version
+        run: |
+          git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          git config --global user.name "0511junpei"
+          
+          current_version=`cat version.txt`
+          if [ "$current_version" = "${{ inputs.version }}" ]; then
+              echo "更新前後のバージョン一致のためスキップ"
+              exit 0
+          fi
+          
+          echo "${{ inputs.version }}" > version.txt
+          git add version.txt
+          git commit -m "Auto Increment "${{ matrix.branch }}
+          git branch -a
+          git push origin ${{ matrix.branch }}:${{ matrix.branch }}
+
+  branch-auto-merge:
     needs: create-branch-list
     runs-on: ubuntu-latest
     env: 
@@ -43,20 +78,33 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
-      - name: checkout main repository
+      - name: checkout base repository
         uses: actions/checkout@v3
-      - name: create pull request
-        id: create-pull-request
+      - name: branch merge
         run: |
-          # ここの認証なんとかしたい。トークン設定にしよう。
+          function catch {
+            git status
+            test=$(git status)
+            echo $test
+            
+            git merge --abort
+            test2=$(git merge --abort)
+            echo $test2
+          }
+          function finally {
+            echo Finally
+          }
+          trap catch ERR
+          trap finally EXIT
+        
           git config --global user.email "shok2gok.tdos3ky@icloud.com"
           git config --global user.name "0511junpei"
-          git pull
-        
-          #git fetch
-          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
-          #git checkout remotes/origin/HEAD
-          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --allow-unrelated-histories
+          #git pull origin/${{ matrix.branch }}
+          git fetch
+          git checkout -b ${{ matrix.branch }}-work remotes/origin/${{ matrix.branch }}
+          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin
+          
+          git merge -m "Auto Merge 'main' To "${{ matrix.branch }} main --allow-unrelated-histories
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
           #git log -n 20
