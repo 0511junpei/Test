@@ -13,11 +13,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const result = await github.rest.repos.createRelease({
-                               owner: context.repo.owner,
-                               repo: context.repo.repo,
-                               tag_name: '20230706'
-                             });
+            echo ${{github.event.number}} 
+            //const result = await github.rest.repos.createRelease({
+            //                   owner: context.repo.owner,
+            //                   repo: context.repo.repo,
+            //                   tag_name: '20230706-2'
+            //                 });
              //let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
              
              console.log(result);
