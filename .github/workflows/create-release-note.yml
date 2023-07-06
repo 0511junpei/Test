@@ -21,9 +21,9 @@ jobs:
                                    pull_number: ${{ github.event.number }}
                                });
             // タイトルからリリース日を取得
-            const matchResult = pull.data.title.match(/.*([0-9]{4}[01][0-9][0-3][0-9]).*/);
-            console.log(matchResult);
-            const yyyyMmDd = "20230708"
+            //const matchResult = pull.data.title.match(/.*([0-9]{4}[01][0-9][0-3][0-9]).*/);
+            //console.log(matchResult);
+            //const yyyyMmDd = "20230708"
             //const yyyyMmDd;
             // 取得できなかった場合は現在日付を設定
             //if (!matchResult) {                
