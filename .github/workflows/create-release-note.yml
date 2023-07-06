@@ -39,8 +39,7 @@ jobs:
                                      target_commitish: pull.data.base.ref,
                                      name: "release-" + yyyyMmDd,
                                      body: pull.data.body + " #29",
-                                     generate_release_notes: true,
-                                     make_latest: true
+                                     generate_release_notes: true
                                  });
 
              console.log(result);
