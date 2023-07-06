@@ -18,12 +18,16 @@ jobs:
                                repo: context.repo.repo,
                                pull_number: ${{ github.event.number }}
                            });
-            //const result = await github.rest.repos.createRelease({
-            //                   owner: context.repo.owner,
-            //                   repo: context.repo.repo,
-            //                   tag_name: '20230706-2'
-            //                 });
+            console.log(result.data.title)
+            console.log(result.data.body)
+            const result2 = await github.rest.repos.createRelease({
+                               owner: context.repo.owner,
+                               repo: context.repo.repo,
+                               tag_name: "tagging-" + result.data.title,
+                               body: result.data.body,
+                               generate_release_notes: true
+                             });
              //let open_list = pull_request_list.data.filter((item) => (item.closed_at == null));
              
-             console.log(result);
+             console.log(result2);
              //return !Object.keys(open_list).length;
