@@ -22,13 +22,14 @@ jobs:
                                });
             // タイトルからリリース日を取得
             const matchResult = pull.data.title.match(/.*([0-9]{4}[01][0-9][0-3][0-9]).*/);
-            const yyyyMmDd = (matchResult) => {
-                if (!matchResult) {
+            const getYyyyMmDd = (array) => {
+                if (!array) {
                     const current = new Date();
                     return String(current.getFullYear()) + String(current.getMonth() + 1) + String(current.getDate());
                 }
-                return matchResult[1];
+                return array[1];
             };
+            const yyyyMmDd = getYyyyMmDd(matchResult);
             // 取得できなかった場合は現在日付を設定
             console.log(yyyyMmDd)
             
