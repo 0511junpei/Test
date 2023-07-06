@@ -24,9 +24,11 @@ jobs:
             const matchResult = pull.data.title.match(/.*([0-9]{4}[01][0-9][0-3][0-9]).*/);
             const getYyyyMmDd = (array) => {
                 if (!array) {
+                    // 現在日付で作成
                     const current = new Date();
-                    return String(current.getFullYear()) + String(current.getMonth() + 1) + String(current.getDate());
+                    return String(current.getFullYear()) + ('00' + (current.getMonth() + 1)).slice(-2) + ('00' + current.getDate()).slice(-2);
                 }
+                // 現在日付で作成
                 return array[1];
             };
             const yyyyMmDd = getYyyyMmDd(matchResult);
