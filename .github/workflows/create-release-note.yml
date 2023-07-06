@@ -32,7 +32,7 @@ jobs:
                                      tag_name: "tagging-" + yyyyMmDd,
                                      target_commitish: pull.data.base.ref,
                                      name: "release-" + yyyyMmDd,
-                                     body: pull.data.body + "#29",
+                                     body: pull.data.body + " #29",
                                      generate_release_notes: true
                                  });
 
