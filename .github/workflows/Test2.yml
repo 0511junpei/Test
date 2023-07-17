@@ -54,7 +54,7 @@ jobs:
           git pull
         
           #git fetch
-          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
+          git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
           #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --allow-unrelated-histories
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
