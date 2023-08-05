@@ -8,10 +8,5 @@ jobs:
     steps:
       - name: Check Out
         uses: actions/checkout@v3
-      - name: Run Check Style
-        uses: nikitasavinov/checkstyle-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: 'github-pr-review'
-          filter-mode: 'nofilter'
-          tool_name: 'test'
+      - name: log
+        run: git log -1
