@@ -9,4 +9,4 @@ jobs:
       - name: Check Out
         uses: actions/checkout@v3
       - name: log
-        run: git log -1 --date=short --pretty=format:%an %cd %ad
+        run: git log -1 --date=short --pretty=format:%an%cd%ad
