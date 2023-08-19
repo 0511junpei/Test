@@ -13,22 +13,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  calculation-new-version:
+  calculate-new-version:
     runs-on: ubuntu-latest
     outputs: 
       new_version: ${{ steps.new_version_id.outputs.new_version_value }}
     steps:
-      - name: checkout work branch
+      - name: checkout main branch
         uses: actions/checkout@v3
         with:
-          ref: production
-      #- name: delete work branch
-      #  run: |
-      #    git push origin  --delete ${{ env.WORK_BRANCH }} 
-      #- name: create work branch
-      #  run: git checkout -b ${{ env.WORK_BRANCH }} main
-      #  if: ${{ always() }}
-      - name: update-version
+          ref: main
+
+      - name: calculate-new-version
         id: new_version_id
         run: |
           # 定数定義
@@ -61,8 +56,61 @@ jobs:
           # 最新バージョン生成
           new_version=`printf "%d.%02d.%03d" $NEW_MAJOR $NEW_MINOR $NEW_REVISION`
           echo "new_version_value=$new_version" >> $GITHUB_OUTPUT
-  update-branches:
-    needs: calculation-new-version
-    uses: 0511junpei/Test/.github/workflows/Test2.yml@main
-    with:
-      version: ${{ needs.calculation-new-version.outputs.new_version }}
+  create-branch-list:
+    runs-on: ubuntu-latest
+    outputs: 
+      branch_list: ${{ steps.branch_list.outputs.branch_list }}
+    steps:
+      - name: checkout main repository
+        uses: actions/checkout@v3
+        
+      - name: create branch list
+        id: branch_list
+        run: |
+          git fetch
+          target_branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
+          branches=$(echo $target_branches | sed s/,$// )
+          echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
+
+  update-version-branch-unit:
+    needs: [calculate-new-version, create-branch-list]
+    runs-on: ubuntu-latest
+    env: 
+      NEW_VERSION: ${{ needs.calculation-new-version.outputs.new_version }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.branch }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: update-version
+        run: |
+          # ここの認証なんとかしたい。トークン設定にしよう。
+          #git config --global user.email "shok2gok.tdos3ky@icloud.com"
+          #git config --global user.name "0511junpei"
+          #git pull
+        
+          # ローカルブランチ作成
+          #git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
+          #git checkout remotes/origin/HEAD
+          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --allow-unrelated-histories
+          #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
+          #echo $test
+          #git log -n 20
+          
+          #git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
+          #git push remotes/origin/${{ matrix.branch }}
+          cat version.txt > ${ env.NEW_VERSION }
+          cat version.txt
+          git add version.txt
+          git commit -m "Automatic merge by version update（"${ env.NEW_VERSION }"） for GitHub Actions"
+
+  #update-branches:
+  #  needs: calculation-new-version
+  #  uses: 0511junpei/Test/.github/workflows/Test2.yml@main
+  #  with:
+  #    version: ${{ needs.calculation-new-version.outputs.new_version }}
