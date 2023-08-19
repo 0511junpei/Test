@@ -79,6 +79,8 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
+      - name: test
+        run: echo ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: checkout repository
         uses: actions/checkout@v3
         with:
