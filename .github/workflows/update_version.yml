@@ -1,7 +1,4 @@
-# develop自動マージの際に、カウントアップするか？
-# productionのバージョンをもとに、developのバージョンを設定する
-# develop新規作成時も自動実行したい
-# codeownerでいじられないように制御するか？Action実施者以外。
+# develop自動マージの際に、カウントアップ
 name: Update Version
 on: 
   push:
