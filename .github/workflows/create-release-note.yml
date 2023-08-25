@@ -21,12 +21,12 @@ jobs:
             const pullrequests = await github.rest.pulls.list({
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
-                                   head: { user: 'main' },
+                                   head: 'main',
                                    base: 'develop/Test',
                                    state: 'close'
                                });
 
             // head: fromブランチ、 base: toブランチ
-            console.log(pullrequests);           
+            console.log(pullrequests.);           
             console.log(pullrequests.data[0].head);
             console.log(pullrequests.data[0].base);
