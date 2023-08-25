@@ -27,6 +27,6 @@ jobs:
                                });
 
             // head: fromブランチ、 base: toブランチ
-            console.log(pullrequests.);           
+            console.log(pullrequests.data[0].body);           
             console.log(pullrequests.data[0].head);
             console.log(pullrequests.data[0].base);
