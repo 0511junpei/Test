@@ -1,6 +1,6 @@
 name: branch-auto-merge
 on: 
-  push:
+  #push:
   pull_request:
     types: closed
     branches: main
