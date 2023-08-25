@@ -2,9 +2,9 @@
 # プルリクテンプレ通りでproductionブランチの
 name: Auto generate release note by release date 
 on: 
-  #push:
-  pull_request:
-    types: closed
+  push:
+  #pull_request:
+  #  types: closed
     #branches: production
   workflow_dispatch:  
 
