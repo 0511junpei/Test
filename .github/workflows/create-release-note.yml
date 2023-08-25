@@ -21,9 +21,8 @@ jobs:
             const pullrequests = await github.rest.pulls.list({
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
-                                   head: 'main'
+                                   head: 'main',
                                    base: 'production'
-                                   pull_number: ${{ github.event.number }}
                                });
 
             console.log(pullrequests);            
