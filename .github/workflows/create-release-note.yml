@@ -27,33 +27,31 @@ jobs:
 
             console.log(pullrequests);            
             
-            #const pullrequests = await github.rest.pulls.get({
-            #                       owner: context.repo.owner,
-            ##                       repo: context.repo.repo,
-            #                       pull_number: ${{ github.event.number }}
-            #                   });
+            /*const pullrequests = await github.rest.pulls.get({
+                                   owner: context.repo.owner,
+                                   repo: context.repo.repo,
+                                   pull_number: ${{ github.event.number }}
+                               });*/
             // タイトルからリリース日を取得
-            #const matchResult = pull.data.title.match(/.*([0-9]{4}[01][0-9][0-3][0-9]).*/);
-            #const getYyyyMmDd = (array) => {
-            #    if (!array) {
-            #        const current = new Date();
-            #        return String(current.getFullYear()) + String(current.getMonth() + 1) + String(current.getDate());
-            #    }
-            #    return array[1];
-            #};
-            #const yyyyMmDd = getYyyyMmDd(matchResult);
-            // 取得できなかった場合は現在日付を設定
-            #console.log(yyyyMmDd)
-            
-            #const result = await github.rest.repos.createRelease({
-            #                         owner: context.repo.owner,
-            #                         repo: context.repo.repo,
-            #                         tag_name: "tagging-" + yyyyMmDd,
-            #                         target_commitish: pull.data.base.ref,
-            #                         name: "release-" + yyyyMmDd,
-            #                         body: pull.data.body,
-            #                         generate_release_notes: true
-            #                     });
+            /*const matchResult = pull.data.title.match(/.*([0-9]{4}[01][0-9][0-3][0-9]).*/);
+            const getYyyyMmDd = (array) => {
+                if (!array) {
+                    const current = new Date();
+                    return String(current.getFullYear()) + String(current.getMonth() + 1) + String(current.getDate());
+                }
+                return array[1];
+            };
+            const yyyyMmDd = getYyyyMmDd(matchResult);
+            console.log(yyyyMmDd)
+            const result = await github.rest.repos.createRelease({
+                                     owner: context.repo.owner,
+                                     repo: context.repo.repo,
+                                     tag_name: "tagging-" + yyyyMmDd,
+                                     target_commitish: pull.data.base.ref,
+                                     name: "release-" + yyyyMmDd,
+                                     body: pull.data.body,
+                                     generate_release_notes: true
+                                 });
 
-             #console.log(result);
+            console.log(result);*/
 
