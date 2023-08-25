@@ -21,6 +21,7 @@ jobs:
             const pullrequests = await github.rest.pulls.list({
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
+                                   state: 'close'
                                });
 
             console.log(pullrequests);           
