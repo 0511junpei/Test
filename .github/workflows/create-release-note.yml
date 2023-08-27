@@ -21,6 +21,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            console.log(${{ inputs.releaseDate }}))
             const pullRequests = await github.rest.pulls.list({
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
@@ -28,7 +29,8 @@ jobs:
                                    //base: 'develop/Test',
                                    state: 'close'
                                });
-            const targetPullRequests =  pullRequests.data.filter(pullRequest => pullRequest.body.match(${{ inputs.releaseDate }}));
+                               
+            const targetPullRequests =  pullRequests.data.filter(pullRequest => pullRequest.body.match(/20230601/);
             // head: fromブランチ、 base: toブランチ
             console.log(pullRequests.data[0].body);           
             console.log(pullRequests.data[0].head);
