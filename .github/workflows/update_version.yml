@@ -4,7 +4,7 @@
 # codeownerでいじられないように制御するか？Action実施者以外。
 name: Update Version
 on: 
-  push:
+  #push:
   pull_request:
     types: 
       - closed
