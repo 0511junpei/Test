@@ -33,4 +33,3 @@ jobs:
             console.log(pullRequests.data[0].body);           
             console.log(pullRequests.data[0].head);
             console.log(pullRequests.data[0].base);
-            
