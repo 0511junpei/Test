@@ -30,6 +30,6 @@ jobs:
                                });
             const targetPullRequests =  pullRequests.data.filter(pullRequest => pullRequest.body.match(${{ inputs.releaseDate }}));
             // head: fromブランチ、 base: toブランチ
-            console.log(targetPullRequests.data[0].body);           
-            console.log(targetPullRequests.data[0].head);
-            console.log(targetPullRequests.data[0].base);
+            console.log(pullRequests.data[0].body);           
+            console.log(pullRequests.data[0].head);
+            console.log(pullRequests.data[0].base);
