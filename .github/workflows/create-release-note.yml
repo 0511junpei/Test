@@ -2,31 +2,35 @@
 # プルリクテンプレ通りでproductionブランチの
 name: Auto generate release note by release date 
 on: 
-  push:
+  #push:
   #pull_request:
   #  types: closed
     #branches: production
-  workflow_dispatch:  
+  workflow_dispatch:
+    inputs:
+      releaseDate:
+        description: 'リリース日'
+        required: true
+        type: string
 
 jobs:
   create-release-note:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - name: create branch list
         uses: actions/github-script@v6
         with:
           script: |
-            const pullrequests = await github.rest.pulls.list({
+            const pullRequests = await github.rest.pulls.list({
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
-                                   head: 'main',
+                                   //head: 'main',
                                    base: 'develop/Test',
                                    state: 'close'
                                });
-
+            pullRequests.data.filter(pullRequest => pullRequest.body.match(${{ inputs.releaseDate }}));
             // head: fromブランチ、 base: toブランチ
-            console.log(pullrequests.data[0].body);           
-            console.log(pullrequests.data[0].head);
-            console.log(pullrequests.data[0].base);
+            console.log(pullRequests.data[0].body);           
+            console.log(pullRequests.data[0].head);
+            console.log(pullRequests.data[0].base);
+            
