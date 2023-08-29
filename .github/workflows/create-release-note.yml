@@ -28,18 +28,18 @@ jobs:
                                    //base: 'develop/Test',
                                    state: 'close'
                                });
-            console.log(pullRequests.length);
-            const targetPullRequests =  pullRequests.data.map(pullRequest => {
+            console.log(pullRequests.data.length);
+            const targetPullRequests =  pullRequests.data.filter(pullRequest => {
                 if (!pullRequest.body) {
                    // プルリクの本文未記入
-                   return;
+                   return false;
                 }
                 const result = pullRequest.body.match(/${{ inputs.releaseDate }}/)
                 if (!result) {
-                  // プルリクの本文未記入
+                  // プルリクミスマッチ
                   console.log("matchしない");
                   console.log(pullRequest.body);
-                  return;
+                  return false;
                 }
                 return result;
             });
