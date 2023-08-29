@@ -41,7 +41,7 @@ jobs:
                   console.log(pullRequest.body);
                   return;
                 }
-                return test;
+                return result;
             });
 
             // head: fromブランチ、 base: toブランチ
