@@ -33,6 +33,5 @@ jobs:
                 //pullRequest.body.match(/${{ inputs.releaseDate }}/)
                 console.log(pullRequest)
                 console.log(pullRequest.body)
-                console.log(pullRequest[body])
             });
             // head: fromブランチ、 base: toブランチ
