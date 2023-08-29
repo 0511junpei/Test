@@ -30,8 +30,8 @@ jobs:
                                });
                                
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
+                console.log(pullRequest.body)
                 const test = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                console.log(test)
                 if (!test) {
                     return;
                 }
