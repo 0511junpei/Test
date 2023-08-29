@@ -31,7 +31,8 @@ jobs:
                                });
             // プルリク本文未記入＋リリース日マッチしないプルリクは除外
             // filterした後にソートした方が良いか？
-            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/releaseDate/));
+            //const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/releaseDate/));
+            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body );
 
             // プルリク取得できない場合は処理終了
             if (!targetPullRequests) {
@@ -46,13 +47,15 @@ jobs:
             // リリース名,
             const releaseNameFormat = (releaseDate) => "release-" + releaseDate;
             // リリースノートbody
+            // 【フォーマット】#999 NNNNNNNNN
             const releaseNoteBodyFormat = (pullRequestNumber, pullRequestTitle) => "#" + pullRequestNumber + " " + pullRequestTitle;
-            
-            const targetBody = targetPullRequests.map(target => releaseNoteBodyFormat(target.number, target.title) + '\r\n');
+                        
+            let targetBody = [];
+            targetPullRequests.forEach(target => targetBody.push(releaseNoteBodyFormat(target.number, target.title));
             // head: fromブランチ、 base: toブランチ
 
             github.rest.repos.createRelease({
-                        body: targetBody,
+                        body: targetBody.join('\r\n'),
                         name: releaseNameFormat(releaseDate),
                         owner: context.repo.owner,
                         repo: context.repo.repo,
