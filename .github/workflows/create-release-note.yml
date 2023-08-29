@@ -37,6 +37,6 @@ jobs:
             
             //console.log(!targetPullRequests ?  : "リリースノート記入対象プルリク数：" + targetPullRequests.length);
             console.log("リリースノート記入対象プルリク数：" + targetPullRequests.length);
-            const releaseNoteFormat((pullRequestNumber, pullRequestTitle) => "#" + target.number + " " + target.title);
+            const releaseNoteFormat((pullRequestNumber, pullRequestTitle) => "#" + pullRequestNumber + " " + pullRequestTitle);
             targetPullRequests.forEach(target => console.log(releaseNoteFormat(target.number, target.title)));
             // head: fromブランチ、 base: toブランチ
