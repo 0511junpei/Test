@@ -1,5 +1,4 @@
-# リリース日単位でリリースノートを作成
-# プルリクテンプレ通りでproductionブランチの
+# リリース日単位でリリースノートを作成（productionへのプルリクを対象とする）
 name: Auto generate release note by release date 
 on: 
   #push:
@@ -29,11 +28,15 @@ jobs:
                                    state: 'close'
                                });
             // プルリク本文未記入＋リリース日マッチしないプルリクは除外
-            const targetPullRequests =  pullRequests.data.filter(pullRequest => {
-                return pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/);
-            });
+            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/));
+
+            if (!targetPullRequests) {
+                console.log("リリースノート記入対象なし");
+                return;
+            }
             
-            console.log("対象");
-            console.log(targetPullRequests.length);
-            console.log(targetPullRequests);
+            //console.log(!targetPullRequests ?  : "リリースノート記入対象プルリク数：" + targetPullRequests.length);
+            console.log("リリースノート記入対象プルリク数：" + targetPullRequests.length);
+            const releaseNoteFormat((pullRequestNumber, pullRequestTitle) => "#" + target.number + " " + target.title);
+            targetPullRequests.forEach(target => console.log(releaseNoteFormat(target.number, target.title)));
             // head: fromブランチ、 base: toブランチ
