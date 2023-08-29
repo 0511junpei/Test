@@ -30,21 +30,7 @@ jobs:
                                });
             console.log(pullRequests.data.length);
             const targetPullRequests =  pullRequests.data.filter(pullRequest => {
-                if (!pullRequest.body) {
-                   // プルリクの本文未記入
-                   return false;
-                }
-                const result = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                return result;
-                /*
-                if (!result) {
-                  // プルリクミスマッチ
-                  console.log("matchしない");
-                  console.log(pullRequest.body);
-                  return false;
-                }
-                return result;
-                */
+                return pullRequest.body || pullRequest.body.match(/${{ inputs.releaseDate }}/);
             });
             
             console.log("対象");
