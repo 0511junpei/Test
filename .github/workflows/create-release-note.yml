@@ -30,11 +30,16 @@ jobs:
                                });
                                
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
-                const test = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                if (test) {
-                  return test;
+                if (!pullRequest.body) {
+                   console.log("bodyが空" + pullRequest.body);
+                   return;
                 }
+                const result = pullRequest.body.match(/${{ inputs.releaseDate }}/)
+                if (body) {
+                  console.log("matchしない" + pullRequest.body);
+                  return;
+                }
+                return test;
             });
-            console.log(targetPullRequests)
 
             // head: fromブランチ、 base: toブランチ
