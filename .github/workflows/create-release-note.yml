@@ -20,6 +20,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: | 
+            const releaseDate = ${{ inputs.releaseDate }};
             // プルリク取得
             const pullRequests = await github.rest.pulls.list({
                                    //base: 'develop/Test',
@@ -30,7 +31,7 @@ jobs:
                                });
             // プルリク本文未記入＋リリース日マッチしないプルリクは除外
             // filterした後にソートした方が良いか？
-            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/));
+            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/releaseDate/));
 
             // プルリク取得できない場合は処理終了
             if (!targetPullRequests) {
@@ -42,10 +43,19 @@ jobs:
             
             // タグ名
             const tagNameFormat = (releaseDate) => "tagging-" + releaseDate;
-            // リリース名
+            // リリース名,
             const releaseNameFormat = (releaseDate) => "release-" + releaseDate;
             // リリースノートbody
-            const releaseNoteFormat = (pullRequestNumber, pullRequestTitle) => "#" + pullRequestNumber + " " + pullRequestTitle;
+            const releaseNoteBodyFormat = (pullRequestNumber, pullRequestTitle) => "#" + pullRequestNumber + " " + pullRequestTitle;
             
-            targetPullRequests.forEach(target => console.log(releaseNoteFormat(target.number, target.title)));
+            const targetBody = targetPullRequests.map(target => releaseNoteBodyFormat(target.number, target.title) + '\r\n');
             // head: fromブランチ、 base: toブランチ
+
+            github.rest.createRelease({
+                        body: targetBody,
+                        name: releaseNameFormat(releaseDate),
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        tag_name: tagNameFormat(releaseDate),
+                        target_commitish: 'production'
+            });
