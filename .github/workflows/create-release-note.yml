@@ -23,15 +23,14 @@ jobs:
             // プルリク取得
             const pullRequests = await github.rest.pulls.list({
                                    //base: 'develop/Test',
-                                   direction: 'asc',
                                    //head: 'main',
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
                                    state: 'close',
                                });
             // プルリク本文未記入＋リリース日マッチしないプルリクは除外
-            //const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/));
-            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body);
+            // filterした後にソートした方が良いか？
+            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/));
 
             // プルリク取得できない場合は処理終了
             if (!targetPullRequests) {
