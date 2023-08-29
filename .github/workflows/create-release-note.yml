@@ -31,7 +31,7 @@ jobs:
                                
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
                 const test = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                if (test) {
+                if (!test) {
                     return;
                 }
                 console.log(test.input)
