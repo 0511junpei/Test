@@ -31,11 +31,10 @@ jobs:
                                
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
                 const test = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                console.log(test)
                 if (test) {
                     return;
                 }
-                console.log(test)
-                return test[input];
+                console.log(test.input)
+                return test.input;
             });
             // head: fromブランチ、 base: toブランチ
