@@ -21,7 +21,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{ inputs.releaseDate }})
             const pullRequests = await github.rest.pulls.list({
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
@@ -31,11 +30,8 @@ jobs:
                                });
                                
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
-                //pullRequest.body.match(/20230601/)
+                //pullRequest.body.match(/${{ inputs.releaseDate }}/)
+                console.log(typeof pullRequest)
                 console.log(pullRequest)
             });
             // head: fromブランチ、 base: toブランチ
-            console.log(pullRequests.data[0].body.match(/${{ inputs.releaseDate }}/))
-            console.log(pullRequests.data[0].body);           
-            console.log(pullRequests.data[0].head);
-            console.log(pullRequests.data[0].base);
