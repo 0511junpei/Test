@@ -28,9 +28,9 @@ jobs:
                                    //base: 'develop/Test',
                                    state: 'close'
                                });
-            console.log(pullRequests.data.length);
+            // プルリク本文未記入＋リリース日マッチしないプルリクは除外
             const targetPullRequests =  pullRequests.data.filter(pullRequest => {
-                return pullRequest.body || pullRequest.body.match(/${{ inputs.releaseDate }}/);
+                return !pullRequest.body || pullRequest.body.match(/${{ inputs.releaseDate }}/);
             });
             
             console.log("対象");
