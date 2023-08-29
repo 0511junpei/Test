@@ -51,7 +51,7 @@ jobs:
             const targetBody = targetPullRequests.map(target => releaseNoteBodyFormat(target.number, target.title) + '\r\n');
             // head: fromブランチ、 base: toブランチ
 
-            github.rest.createRelease({
+            github.rest.repos.createRelease({
                         body: targetBody,
                         name: releaseNameFormat(releaseDate),
                         owner: context.repo.owner,
