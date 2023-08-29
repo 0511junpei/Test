@@ -32,8 +32,7 @@ jobs:
                                
             //const targetPullRequests =  pullRequests.data.filter(pullRequest => pullRequest.body.match(/20230601/));
             // head: fromブランチ、 base: toブランチ
-            console.log(typeof pullRequests)
-            console.log(typeof pullRequests.data[0].body)
+            console.log(typeof pullRequests.data[0].body.match(/20230601/)))
             console.log(pullRequests.data[0].body);           
             console.log(pullRequests.data[0].head);
             console.log(pullRequests.data[0].base);
