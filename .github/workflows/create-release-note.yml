@@ -30,10 +30,11 @@ jobs:
                                });
                                
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
-                console.log(pullRequest.body)
                 const test = pullRequest.body.match(/${{ inputs.releaseDate }}/)
                 if (test) {
                   return test;
                 }
             });
+            console.log(targetPullRequests)
+
             // head: fromブランチ、 base: toブランチ
