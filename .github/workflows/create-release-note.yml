@@ -32,9 +32,8 @@ jobs:
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
                 console.log(pullRequest.body)
                 const test = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                if (!test) {
-                    return;
+                if (test) {
+                  return test;
                 }
-                return test;
             });
             // head: fromブランチ、 base: toブランチ
