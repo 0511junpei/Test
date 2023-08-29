@@ -31,12 +31,14 @@ jobs:
                                
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
                 if (!pullRequest.body) {
-                   console.log("bodyが空" + pullRequest.body);
+                   console.log("bodyが空");
+                   console.log(pullRequest.body);
                    return;
                 }
                 const result = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                if (body) {
-                  console.log("matchしない" + pullRequest.body);
+                if (result) {
+                  console.log("matchしない");
+                  console.log(pullRequest.body);
                   return;
                 }
                 return test;
