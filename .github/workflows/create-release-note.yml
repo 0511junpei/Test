@@ -19,7 +19,8 @@ jobs:
       - name: create branch list
         uses: actions/github-script@v6
         with:
-          script: |
+          script: | 
+            // プルリク取得
             const pullRequests = await github.rest.pulls.list({
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
@@ -28,15 +29,23 @@ jobs:
                                    state: 'close'
                                });
             // プルリク本文未記入＋リリース日マッチしないプルリクは除外
-            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/));
+            //const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/));
+            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body);
 
+            // プルリク取得できない場合は処理終了
             if (!targetPullRequests) {
                 console.log("リリースノート記入対象なし");
                 return;
             }
             
             console.log("リリースノート記入対象プルリク数：" + targetPullRequests.length);
-            // リリースノートフォーマット
+            
+            // タグ名
+            const tagNameFormat = (releaseDate) => "tagging-" + releaseDate;
+            // リリース名
+            const releaseNameFormat = (releaseDate) => "release-" + releaseDate;
+            // リリースノートbody
             const releaseNoteFormat = (pullRequestNumber, pullRequestTitle) => "#" + pullRequestNumber + " " + pullRequestTitle;
+            
             targetPullRequests.forEach(target => console.log(releaseNoteFormat(target.number, target.title)));
             // head: fromブランチ、 base: toブランチ
