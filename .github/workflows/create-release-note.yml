@@ -28,20 +28,23 @@ jobs:
                                    //base: 'develop/Test',
                                    state: 'close'
                                });
-                               
+            console.log(pullRequests.length);
             const targetPullRequests =  pullRequests.data.map(pullRequest => {
                 if (!pullRequest.body) {
-                   console.log("bodyが空");
-                   console.log(pullRequest.body);
+                   // プルリクの本文未記入
                    return;
                 }
                 const result = pullRequest.body.match(/${{ inputs.releaseDate }}/)
-                if (result) {
+                if (!result) {
+                  // プルリクの本文未記入
                   console.log("matchしない");
                   console.log(pullRequest.body);
                   return;
                 }
                 return result;
             });
-
+            
+            console.log("対象");
+            console.log(targetPullRequests.length);
+            console.log(targetPullRequests);
             // head: fromブランチ、 base: toブランチ
