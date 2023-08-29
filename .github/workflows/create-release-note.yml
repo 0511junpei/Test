@@ -51,7 +51,7 @@ jobs:
             const releaseNoteBodyFormat = (pullRequestNumber, pullRequestTitle) => "#" + pullRequestNumber + " " + pullRequestTitle;
                         
             let targetBody = [];
-            targetPullRequests.forEach(target => targetBody.push(releaseNoteBodyFormat(target.number, target.title));
+            targetPullRequests.forEach(target => targetBody.push(releaseNoteBodyFormat(target.number, target.title)));
             // head: fromブランチ、 base: toブランチ
 
             github.rest.repos.createRelease({
