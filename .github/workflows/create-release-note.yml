@@ -22,11 +22,12 @@ jobs:
           script: | 
             // プルリク取得
             const pullRequests = await github.rest.pulls.list({
+                                   //base: 'develop/Test',
+                                   direction: 'asc',
+                                   //head: 'main',
                                    owner: context.repo.owner,
                                    repo: context.repo.repo,
-                                   //head: 'main',
-                                   //base: 'develop/Test',
-                                   state: 'close'
+                                   state: 'close',
                                });
             // プルリク本文未記入＋リリース日マッチしないプルリクは除外
             //const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/${{ inputs.releaseDate }}/));
