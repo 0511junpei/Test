@@ -33,9 +33,8 @@ jobs:
                 const test = pullRequest.body.match(/${{ inputs.releaseDate }}/)
                 console.log(test)
                 if (!test) {
-                    console.log("testif分" + test)
                     return;
                 }
-                return test.input;
+                return test;
             });
             // head: fromブランチ、 base: toブランチ
