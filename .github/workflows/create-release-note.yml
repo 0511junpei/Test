@@ -55,7 +55,7 @@ jobs:
             // head: fromブランチ、 base: toブランチ
 
             github.rest.repos.createRelease({
-                        body: targetBody.join('\r\n'),
+                        //body: targetBody.join('\r\n'),
                         generate_release_notes: true,
                         name: releaseNameFormat(releaseDate),
                         owner: context.repo.owner,
