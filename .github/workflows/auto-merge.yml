@@ -1,6 +1,6 @@
 # reference: https://tech.mirrativ.stream/entry/2023/01/27/105211
 
-name: branch-auto-merge
+name: branch-auto-merge(test)
 on: 
   # productionのプルリクclose後に動かしたい
   #push:
