@@ -1,22 +1,67 @@
+# reference: https://tech.mirrativ.stream/entry/2023/01/27/105211
+
 name: branch-auto-merge
 on: 
+  # productionのプルリクclose後に動かしたい
   #push:
   pull_request:
     types: closed
-    branches: main
+    branches: production
+  #workflow_run:
+  #  workflows: [Update Version]
+  #  types:
+  #    - completed
   workflow_dispatch:
 
 jobs:
   create-branch-list:
     runs-on: ubuntu-latest
+    outputs: 
+      branch_list: ${{ steps.branch_list.outputs.branch_list }}
     steps:
-      - name: checkout main repository
+      - name: checkout default repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
       - name: create branch list
-        id: branches
+        id: branch_list
         run: |
-          git worktree add Alpha_work develop/Alpha
-          git worktree add Bravo_work develop/Bravo
-          git worktree list
+          # develop/feature/hotfix/sandboxブランチを対象
+          # ↓いるんだっけ？
+          #git fetch
+          target_branches=$(git branch -a | grep -e remotes/origin/develop/ -e remotes/origin/feature/ -e remotes/origin/hotfix/ -e remotes/origin/sandbox/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
+          branches=$(echo $target_branches | sed s/,$// )
+          echo ${branches}
+          echo "branch_list=[ $branches ]" >> $GITHUB_OUTPUT
+  auto-merge-branch-unit:
+    needs: create-branch-list
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
+    steps:
+      - name: checkout default repository
+        uses: actions/checkout@v3
+      # プルリク→自動マージ？それであればscript
+      # 勝手にマージして良いのであれば、git mergeする。コンフリクトがあったら。
+      # プルリク承認してもらうのだるいから公社か
+      - name: auto-merge
+        id: create-pull-request
+        run: | 
+          # Github Action Bot設定
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+        
+          git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
+          #git checkout remotes/origin/HEAD
+          test=`git diff`
+          echo $test
+          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }}
+          #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
+          #echo $test
+          #git log -n 20
+          
+          #git add -A
+          #git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
+          #git push remotes/origin/${{ matrix.branch }}
+
+          # プルリク出す→Slack通知？
