@@ -26,7 +26,7 @@ jobs:
         run: |
           # develop/feature/hotfix/sandboxブランチを対象
           # ↓いるんだっけ？
-          #git fetch
+          git fetch
           #target_branches=$(git branch -a | grep -e remotes/origin/develop/ -e remotes/origin/feature/ -e remotes/origin/hotfix/ -e remotes/origin/sandbox/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           target_branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           branches=$(echo $target_branches | sed s/,$// )
