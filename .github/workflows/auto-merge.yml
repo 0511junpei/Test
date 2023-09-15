@@ -52,8 +52,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
         
-          git fetch
-          git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
+          git fetch origin ${{ matrix.branch }}
+          git checkout -b ${{ matrix.branch }}-automerge origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
           test=`git diff`
           echo $test
