@@ -55,7 +55,7 @@ jobs:
           git fetch origin ${{ matrix.branch }}
           git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
-          echo `git diff`
+          git diff
           #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }}
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
