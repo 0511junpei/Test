@@ -1,0 +1,65 @@
+# リリース日単位でリリースノートを作成（productionへのプルリクを対象とする）
+name: Auto generate release note by release date 
+on: 
+  #push:
+  #pull_request:
+  #  types: closed
+    #branches: production
+  workflow_dispatch:
+    inputs:
+      releaseDate:
+        description: 'リリース日'
+        required: true
+        type: string
+
+jobs:
+  create-release-note:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create branch list
+        uses: actions/github-script@v6
+        with:
+          script: | 
+            const releaseDate = ${{ inputs.releaseDate }};
+            // プルリク取得
+            const pullRequests = await github.rest.pulls.list({
+                                   //base: 'develop/Test',
+                                   //head: 'main',
+                                   owner: context.repo.owner,
+                                   repo: context.repo.repo,
+                                   state: 'close',
+                               });
+            // プルリク本文未記入＋リリース日マッチしないプルリクは除外
+            // filterした後にソートした方が良いか？
+            //const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body && pullRequest.body.match(/releaseDate/));
+            const targetPullRequests = pullRequests.data.filter(pullRequest => pullRequest.body );
+
+            // プルリク取得できない場合は処理終了
+            if (!targetPullRequests) {
+                console.log("リリースノート記入対象なし");
+                return;
+            }
+            
+            console.log("リリースノート記入対象プルリク数：" + targetPullRequests.length);
+            
+            // タグ名
+            const tagNameFormat = (releaseDate) => "tagging-" + releaseDate;
+            // リリース名,
+            const releaseNameFormat = (releaseDate) => "release-" + releaseDate;
+            // リリースノートbody
+            // 【フォーマット】#999 NNNNNNNNN
+            const releaseNoteBodyFormat = (pullRequestNumber, pullRequestTitle) => "#" + pullRequestNumber + " " + pullRequestTitle;
+                        
+            let targetBody = [];
+            targetPullRequests.forEach(target => targetBody.push(releaseNoteBodyFormat(target.number, target.title)));
+            // head: fromブランチ、 base: toブランチ
+
+            github.rest.repos.createRelease({
+                        //body: targetBody.join('\r\n'),
+                        generate_release_notes: true,
+                        name: releaseNameFormat(releaseDate),
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        tag_name: tagNameFormat(releaseDate),
+                        target_commitish: 'production'
+            });

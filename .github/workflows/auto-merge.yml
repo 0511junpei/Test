@@ -1,15 +1,16 @@
 # reference: https://tech.mirrativ.stream/entry/2023/01/27/105211
 
-name: branch-auto-merge
+name: branch-auto-merge(test)
 on: 
+  # productionのプルリクclose後に動かしたい
   #push:
-  #pull_request:
-  #  types: closed
-  #  branches: production
-  workflow_run:
-    workflows: [Update Version]
-    types:
-      - completed
+  pull_request:
+    types: closed
+    branches: production
+  #workflow_run:
+  #  workflows: [Update Version]
+  #  types:
+  #    - completed
   workflow_dispatch:
 
 jobs:
@@ -18,17 +19,15 @@ jobs:
     outputs: 
       branch_list: ${{ steps.branch_list.outputs.branch_list }}
     steps:
-      - name: variable test
-        run: |
-          echo "$new_version_value"
-          echo "$env.new_version_env"
-          echo "$new_version_path"
-      - name: checkout main repository
+      - name: checkout default repository
         uses: actions/checkout@v3
       - name: create branch list
         id: branch_list
         run: |
+          # develop/feature/hotfix/sandboxブランチを対象
+          # ↓いるんだっけ？
           git fetch
+          #target_branches=$(git branch -a | grep -e remotes/origin/develop/ -e remotes/origin/feature/ -e remotes/origin/hotfix/ -e remotes/origin/sandbox/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           target_branches=$(git branch -a | grep remotes/origin/develop/ | sed s@remotes/origin/@\"@ | sed s/$/\",/ | sort )
           branches=$(echo $target_branches | sed s/,$// )
           echo ${branches}
@@ -36,27 +35,28 @@ jobs:
   auto-merge-branch-unit:
     needs: create-branch-list
     runs-on: ubuntu-latest
-    env: 
-      GH_TOKEN: ${{ github.token }}
     strategy:
       max-parallel: 1
       matrix:
         branch: ${{ fromJson(needs.create-branch-list.outputs.branch_list) }}
     steps:
-      - name: checkout main repository
+      - name: checkout default repository
         uses: actions/checkout@v3
-      - name: create pull request
+      # プルリク→自動マージ？それであればscript
+      # 勝手にマージして良いのであれば、git mergeする。コンフリクトがあったら。
+      # プルリク承認してもらうのだるいから公社か
+      - name: auto-merge
         id: create-pull-request
-        run: |
-          # ここの認証なんとかしたい。トークン設定にしよう。
-          git config --global user.email "shok2gok.tdos3ky@icloud.com"
-          git config --global user.name "0511junpei"
-          git pull
+        run: | 
+          # Github Action Bot設定
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
         
-          #git fetch
+          git fetch origin ${{ matrix.branch }}
           git checkout -b ${{ matrix.branch }}-automerge remotes/origin/${{ matrix.branch }}
           #git checkout remotes/origin/HEAD
-          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }} --allow-unrelated-histories
+          git diff
+          #git merge -m "Auto Merge 'main' To "${{ matrix.branch }} remotes/origin/${{ matrix.branch }}
           #test=`git merge remotes/origin/${{ matrix.branch }} --allow-unrelated-histories`
           #echo $test
           #git log -n 20
@@ -64,3 +64,5 @@ jobs:
           #git add -A
           #git commit -m "Auto Merge 'main' To "${{ matrix.branch }}
           #git push remotes/origin/${{ matrix.branch }}
+
+          # プルリク出す→Slack通知？
