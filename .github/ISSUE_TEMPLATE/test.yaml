@@ -2,7 +2,7 @@ name: 🐞 Bug
 description: File a bug/issue
 title: "[BUG] <title>"
 labels: ["Bug", "Needs Triage"]
-projects: ["@0511junpei's untitled project"]
+projects: ["0511junpei/Test"]
 body:
 - type: checkboxes
   attributes:
